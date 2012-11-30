@@ -1,4 +1,3 @@
-console.log("fuck off");
 exports.UserList = function () {
 
 	this.userCount	= 0;
