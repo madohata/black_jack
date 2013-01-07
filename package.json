@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "express": "3.0.3",
-    "ejs": "*"
+    "express-helpers" : "1.3.0",
+    "socket.io" : "0.9.11",
+    "ejs": "0.8.3"
   }
 }
