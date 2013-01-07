@@ -1,14 +1,3 @@
 {
-  "name": "ninja_black_jack",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
-  },
-  "dependencies": {
-    "express": "3.0.3",
-    "express-helpers" : "1.3.0",
-    "socket.io" : "0.9.11",
-    "ejs": "0.8.3"
-  }
+ 
 }
