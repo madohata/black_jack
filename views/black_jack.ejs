@@ -1,6 +1,21 @@
-<%- include header %>
+<!--
+  ブラックジャックテンプレート
+ -->
+ <html>
+	<head>
+		<!-- サーバーで生成されたソケットデータ？（要調査）を読み込む -->
+		<script src="http://localhost:3001/socket.io/socket.io.js"></script>
+		<!-- 表示用プログラムの読み込み -->
+		<!-- エンチャントライブラリの読み込み -->
+		<script type="text/javascript" src="./javascripts/enchant.js"></script>
+		<!-- ゲームファイルの読み込み　-->
+		<script type="text/javascript" src="./javascripts/game.js"></script>
+	</head>
+		
 
-    <h1><%= title %></h1>
-    <p>black jack <%= title %></p>
 
-<%- include footer %>
+
+	<body>
+		<div id="enchant-stage"></div>
+	</body>
+</html>
