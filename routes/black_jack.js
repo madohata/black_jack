@@ -1,49 +1,49 @@
 
 /**
- * ƒuƒ‰ƒbƒNƒWƒƒƒbƒN—pƒRƒ“ƒgƒ[ƒ‰[
+ * ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯ç”¨ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
  */
 
  exports.black_jack = function(req, res) {
 
-	 // Socket.io‚Ì€”õ
+	 // Socket.ioã®æº–å‚™
 	 var app = require('express').createServer();
-	 var io = require('socket.io').listen(app.listen(3001)) // TODO:‚Æ‚è‚ ‚¦‚¸3001”Ô‚Æ‚µ‚Ä‚¢‚é‚ªA‰½‚©ª‹’‚Ì‚ ‚éƒ|[ƒg‚É•ÏX‚µ‚½‚¢
+	 var io = require('socket.io').listen(app.listen(3001)) // TODO:ã¨ã‚Šã‚ãˆãš3001ç•ªã¨ã—ã¦ã„ã‚‹ãŒã€ä½•ã‹æ ¹æ‹ ã®ã‚ã‚‹ãƒãƒ¼ãƒˆã«å¤‰æ›´ã—ãŸã„
 
 	/**
-	 * ƒ†[ƒU[î•ñ‚ÌŠÇ—
+	 * ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã®ç®¡ç†
 	 */
 	var UserList = require('../model/userList').UserList;
 	var userList = new UserList();
 	
 	/**
-	 * ’ÊMƒCƒxƒ“ƒgƒŠƒXƒi“o˜^
+	 * é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒŠç™»éŒ²
 	 */
 	 io.sockets.on('connection', function(socket) {
-	 	// Ú‘±‚ª¬—§‚µ‚½‚±‚Æ‚ğƒNƒ‰ƒCƒAƒ“ƒg‚É’Ê’m
+	 	// æ¥ç¶šãŒæˆç«‹ã—ãŸã“ã¨ã‚’ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã«é€šçŸ¥
 	 	socket.emit('connected');
 	 	
-	 	// ƒT[ƒoƒTƒCƒh@socketioƒCƒxƒ“ƒgƒŠƒXƒi
+	 	// ã‚µãƒ¼ãƒã‚µã‚¤ãƒ‰ã€€socketioã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒŠ
 	 	/**
-	 	 * Ú‘±‚ª“rØ‚ê‚½‚ÌƒCƒxƒ“ƒg
+	 	 * æ¥ç¶šãŒé€”åˆ‡ã‚ŒãŸæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	 	 */
 	 	 socket.on('disconnect', function() {
 	 	 	
-	 	 	// Ú‘±‚ªØ‚ê‚½‚±‚Æ‚ğ‘SƒNƒ‰ƒCƒAƒ“ƒg‚É’Ê’m
+	 	 	// æ¥ç¶šãŒåˆ‡ã‚ŒãŸã“ã¨ã‚’å…¨ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã«é€šçŸ¥
 	 	 	io.sockets.emit('user_disconnected', {});
-	 	 	// ƒ†[ƒU[ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğíœ
+	 	 	// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 	 	 	userList.removeUserData(socket.id);
 	 	 }
 	 	 
 	 	 /**
-	 	  * ƒnƒ“ƒhƒVƒFƒCƒN‚ª¬Œ÷‚µ‚Äƒ†[ƒU[‚ªƒƒOƒCƒ“‚µ‚½‚ÌƒCƒxƒ“ƒg
+	 	  * ãƒãƒ³ãƒ‰ã‚·ã‚§ã‚¤ã‚¯ãŒæˆåŠŸã—ã¦ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒãƒ­ã‚°ã‚¤ãƒ³ã—ãŸæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	 	  */
 	 	  socket.on('login', function(data) {
-	 	  	// ‘¼ƒ†[ƒU[‚ÌƒNƒ‰ƒCƒAƒ“ƒg‚É
+	 	  	// ä»–ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã«
 	 	  	
-	 	  	// ƒ†[ƒU[ƒŠƒXƒg‚Éƒ†[ƒU[‚ğ“o˜^
+	 	  	// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒªã‚¹ãƒˆã«ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’ç™»éŒ²
 	 	  	userList.setUserData();
 	 	  })
 	 	 
- 	// ƒeƒ“ƒvƒŒ[ƒg•\¦
+ 	// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆè¡¨ç¤º
  	res.render('black_jack', { title: 'BlackJack'});
  };
