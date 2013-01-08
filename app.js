@@ -16,7 +16,7 @@ var app = express.createServer();
 
 app.configure(function(){
 
-  app.set('port', process.env.PORT || 3000);
+  //app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -30,6 +30,9 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+
+// 開くポートを指定する
+app.listen(3000);
 
 app.get('/black_jack', blackJack.black_jack); // TODO: 自動的にコントローラーを読み込む事は出来なかったか？
 app.get('/', routes.index);
