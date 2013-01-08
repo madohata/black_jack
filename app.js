@@ -12,7 +12,7 @@ var express = require('express')
 // ejsのヘルパー登録
 var helpers = require('express-helpers')(app);
 // explessのインスタンス
-var app = express();
+var app = express.createServer();
 
 app.configure(function(){
 
