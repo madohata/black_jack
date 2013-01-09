@@ -2,9 +2,6 @@
  * Enchant.js
  */
 enchant();
-// サーバーで生成されたsocket.ioの読み込み
-// TODO: URLをサーバに上げる際は変更する
-document.write('<script src="http://3001/socket.io/socket.io.js"></script>');
 
 /**
  * ウィンドウが読み込まれたとき
@@ -63,7 +60,7 @@ window.onload = function() {
 	}
 
 	// ソケット接続
-	var socket = io.connect('http://localhost:3001');
+	var socket = io.connect('/black_jack');
 	// ソケット接続に成功した場合のイベントリスナ
 	socket.on('connect', function() {
 		addLog("接続できた！");
