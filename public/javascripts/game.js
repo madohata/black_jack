@@ -43,6 +43,7 @@ window.onload = function() {
 		betButton		: 'images/button_bet.gif',
 		hitButton		: 'images/button_hit.gif',
 		standButton		: 'images/button_stand.gif',
+		resultButton	: 'images/button_result.gif',
 		trump			: 'images/trump.png',
 		trumpFaceDown	: 'images/trump_face_down.jpg',
 		sheet			: 'images/sheet.png'
@@ -51,6 +52,7 @@ window.onload = function() {
 	game.preload(imagePass['betButton']);
 	game.preload(imagePass['hitButton']);
 	game.preload(imagePass['standButton']);
+	game.preload(imagePass['resultButton']);
 	game.preload(imagePass['trump']);	// トランプ画像
 	game.preload(imagePass['trumpFaceDown']);	// トランプ画像
 	game.preload(imagePass['sheet']);
@@ -546,7 +548,7 @@ window.onload = function() {
 	var ResultButton = enchant.Class.create(ButtonBase, {
 		initialize : function(x, y, width, height) {
 			ButtonBase.call(this, x-32, y-16, 64, 32);
-			this.image = getImage('standButton');
+			this.image = getImage('resultButton');
 		}
 	});
 
