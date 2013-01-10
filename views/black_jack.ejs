@@ -10,11 +10,36 @@
 		<script type="text/javascript" src="./javascripts/enchant.js"></script>
 		<!-- ゲームファイルの読み込み　-->
 		<script type="text/javascript" src="./javascripts/game.js"></script>
+		<!-- チャット用Jqueryライブラリ -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script>
+			var socket = io.connect('http://madohata.c.node-ninja.com:3000/');
+			
+			// メッセージを送る関数
+			function sendMessage()
+			{
+				socket.emit('chat_message', { message: $('#msg').val(), nickname: "no name"});
+				$('#msg').val("");
+			}
+		</script>
 	</head>
 		
 
 
 
 	<body>
+		<h1>chat console</h1>
+		 
+		<div id="chatConsole">
+		</div>
+		
+		
+		 
+		<div>
+		    <input type="text" id="msg"/>
+		    <input type="button" id="sendButton"  onClick="sendMessage()" value="Send Message"/>
+		</div>
+		<div id="console">
+		</div>
 	</body>
 </html>

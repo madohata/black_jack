@@ -285,6 +285,28 @@ app.listen(3000);
 		 	}
 	 		// ■受け取るのはゲーム進行中のみ----------------------------------------
 	 	 });
+	 	 
+	 	 /**
+	 	  * メッセージを送信する
+	 	  */
+	 	var msgLog = new Array();
+		socket.on('chat_message', function(data) {
+			// logging
+			msgLog.unshift(data);
+			if(msgLog.length > 10)
+			{
+			   while(msgLog.length > 10)
+			   {
+			        msgLog.pop();
+			   }
+			}
+			console.log(msgLog);
+			
+			data.nickname = userList.getUserData(socket.id).nickname;
+
+			// for all: io.sockets.emit()
+			io.sockets.emit('chat_message', data);
+		});
 
 	 	 // TODO: デバッグイベント
 	 	var debugReceive = function () {

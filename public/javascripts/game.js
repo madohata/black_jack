@@ -345,6 +345,15 @@ window.onload = function() {
 			});
 			stateManager.addChild("standButton", standButton);
 		});
+		
+		/**
+		 * チャットメッセージを受け取る #console :IDの付いたDOMに送る
+		 */
+		socket.on('chat_message', function (data) {
+			var buf = '<span style="color: #999">' + data.nickname + ':</span> ';
+			buf += data.message + '<br/>';
+			$("#console").html(buf + $("#console").html());
+		});
 
 		// ゲームメイン処理の開始　ゲーム開始
 		game.rootScene.addEventListener(Event.ENTER_FRAME, enterFrameEvent);
@@ -740,4 +749,5 @@ window.onload = function() {
 			showFunc(data[i]);
 		}
 	}
+	
 }
