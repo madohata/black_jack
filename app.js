@@ -141,12 +141,13 @@ app.listen(3000);
 
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 	 	if(! userList.isEmptySeat()) {
-	 		res.render('index', { title: '現在ユーザーがいっぱいです'});
+	 		console.log("テーブルに空きがないため参加不可");
 	 		return;
 	 	}
 
 	 	if(isOngoing) {
-	 		res.render('index', { title: '現在ゲーム進行中ですしばらくお待ちください'});
+	 		// TODO: メッセージをクライアントに表示させよう
+	 		console.log("ゲーム進行中のため参加不可");
 	 		return;
 	 	}
 
