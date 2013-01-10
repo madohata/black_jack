@@ -195,7 +195,7 @@ app.listen(3000);
 		 	  	// 他ユーザークライアントにアカウント情報を知らせる
 		 	  	// TODO: テスト
 		 	  	console.log("socketの中身");
-		 	  	console.loh(socket);
+		 	  	console.log(socket);
 		 	  	
 		 	  	socket.broadcast.emit('login_announce_other', myAccount);
 		 	  	// 自分のクライアントにアカウント情報を知らせる
