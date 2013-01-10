@@ -139,12 +139,14 @@ app.listen(3000);
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 	 	if(! userList.isEmptySeat()) {
 	 		console.log("テーブルに空きがないため参加不可");
+	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません"});
 	 		return;
 	 	}
 
 	 	if(isOngoing) {
 	 		// TODO: メッセージをクライアントに表示させよう
 	 		console.log("ゲーム進行中のため参加不可");
+	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません"});
 	 		return;
 	 	}
 
