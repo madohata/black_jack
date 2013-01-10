@@ -131,7 +131,7 @@ app.listen(3000);
 	 * 通信イベントリスナ登録
 	 */
 	 //io.sockets.on('connection', function(socket) {
-	 io.sockets.of('/black_jack').on('connection', function(socket) {
+	 io.sockets.on('connection', function(socket) {
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
 
