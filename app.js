@@ -309,10 +309,10 @@ app.listen(3000);
 		});
 
 	 	 // TODO: デバッグイベント
-	 	var debugReceive = function () {
-	 		 io.sockets.emit("debug_receive", {message: "デバッグレシーブ",userList:userList.getUserDataAllForClient()});
-	 	}
-	 	var loopname = setInterval(debugReceive, 3000);
+//	 	var debugReceive = function () {
+//	 		 io.sockets.emit("debug_receive", {message: "デバッグレシーブ",userList:userList.getUserDataAllForClient()});
+//	 	}
+//	 	var loopname = setInterval(debugReceive, 3000);
 
 	 	// データ詳細を表示させる関数
 	 	var showFunc = function (data) {
