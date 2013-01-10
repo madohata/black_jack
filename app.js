@@ -40,7 +40,7 @@ app.listen(80);
 	 var INIT_CHIP = 100;
 	 
 	 // Socket.ioの準備
-	 var io = require('socket.io').listen(app, { port: 3000});
+	 var io = require('socket.io').listen(express.createServer().listen(3000));
 
 	/**
 	 * ユーザー情報の管理
