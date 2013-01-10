@@ -353,6 +353,9 @@ app.listen(3000);
 				// TODO : テスト
 				console.log("ヒットORスタンド　の質問イベント発火");
 				console.log(io);
+				// TODO: テスト
+				console.log("io.socketsの中身");
+				console.log(io.sockets);
 				io.sockets.socket(i).emit('hit_or_stand');
 			}
 		}
@@ -404,9 +407,6 @@ app.listen(3000);
 			while(dealer.willHit()) {
 				var card = cards.drawCard();
 				dealer.pushCard( card );
-				// TODO: テスト
-				console.log("io.socketsの中身");
-				console.log(io.sockets);
 				
 				io.sockets.emit('receive_dealer_action', {card:card});
 				console.log("ディーラー連続してカードを引く-----------------------------");
