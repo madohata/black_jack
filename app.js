@@ -57,23 +57,21 @@ app.listen(3000);
 	cards.shuffleCards(); // カードをシャッフルする
 
 	/**
-	 * TODO: ディーラークラスを作成
+	 * ディーラークラスを作成
 	 */
 	var Dealer = require('./model/dealer').Dealer;
 	var dealer = new Dealer();
 
 	/**
 	 * ハンド管理クラスを作成
-	 * TODO : ハンドリストはユーザーのIDと紐付けるユーザーはハンドIDのみを持つ
+	 * ハンドリストはユーザーのIDと紐付けるユーザーはハンドIDのみを持つ
 	 */
 	var HandManager = require('./model/handManager').HandManager;
 	var handManager = new HandManager(); // ユーザーデータの作成時に手札を追加し紐付ける
 
 	/**
-	 * TODO: 進行管理クラスを作成・・・？
-	 * 少なくともタイムオーバー処理を書く必要がある
+	 * 進行クラス
 	 */
-	//
 	var TimeKeeper = function() {
 		// 実行する処理の配列
 		this.eventList = new Array();
@@ -90,7 +88,6 @@ app.listen(3000);
 	 		// ディール処理を実行する
 			deal();
 		}
-		// TODO:ディーラーのHITターンへ移動する
 
 		// タイマー変数のリスト
 		this.waitingList = new Array();
@@ -134,7 +131,7 @@ app.listen(3000);
 	 * 通信イベントリスナ登録
 	 */
 	 //io.sockets.on('connection', function(socket) {
-	 io.of('/black_jack').on('connection', function(socket) {
+	 io.sockets.of('/black_jack').on('connection', function(socket) {
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
 
@@ -193,9 +190,6 @@ app.listen(3000);
 		 	  	handManager.createHand(socket.id);
 		 	  	var myAccount = userList.getUserData(socket.id);
 		 	  	// 他ユーザークライアントにアカウント情報を知らせる
-		 	  	// TODO: テスト
-		 	  	console.log("socketの中身");
-		 	  	console.log(socket);
 		 	  	
 		 	  	socket.broadcast.emit('login_announce_other', myAccount);
 		 	  	// 自分のクライアントにアカウント情報を知らせる
@@ -291,10 +285,10 @@ app.listen(3000);
 	 	 });
 
 	 	 // TODO: デバッグイベント
-//	 	var debugReceive = function () {
-//	 		 io.sockets.emit("debug_receive", {message: "デバッグレシーブ",userList:userList.getUserDataAllForClient()});
-//	 	}
-//	 	var loopname = setInterval(debugReceive, 3000);
+	 	var debugReceive = function () {
+	 		 io.sockets.emit("debug_receive", {message: "デバッグレシーブ",userList:userList.getUserDataAllForClient()});
+	 	}
+	 	var loopname = setInterval(debugReceive, 3000);
 
 	 	// データ詳細を表示させる関数
 	 	var showFunc = function (data) {
@@ -350,14 +344,7 @@ app.listen(3000);
 			// Hit出来るユーザーには選択肢を提示
 			console.log("+++++++++canhit判定+++++++++++++++++++++++");
 			if(canHit) {
-				// TODO : テスト
-				console.log("ヒットORスタンド　の質問イベント発火");
-				console.log(io);
-				// TODO: テスト
-				console.log("io.sockets.socket(i)の中身");
-				console.log(io.sockets.socket(i));
-				//io.sockets.socket(i).emit('hit_or_stand');
-				socket.emit('hit_or_stand')
+				io.sockets.socket(i).emit('hit_or_stand');
 			}
 		}
 
