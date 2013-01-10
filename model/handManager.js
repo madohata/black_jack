@@ -140,7 +140,7 @@ exports.HandManager = function() {
 		console.log(this.isStand(id)+"++++++++++++++++++++++++++++++++++++++stand");
 		console.log(this.wasHit(id)+"++++++++++++++++++++++++++++++++++++++washit");
 
-		if(this.calcHand(id) < 21 && this.isStand(id) == false && this.wasHit(id) == false ) {
+		if(this.calcHand(id) <= 21 && this.isStand(id) == false && this.wasHit(id) == false ) {
 			console.log("----------------ヒットできる");
 			return true;
 		}
