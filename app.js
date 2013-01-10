@@ -346,6 +346,9 @@ app.listen(3000);
 			// Hit出来るユーザーには選択肢を提示
 			console.log("+++++++++canhit判定+++++++++++++++++++++++");
 			if(canHit) {
+				// TODO : テスト
+				console.log("ヒットORスタンド　の質問イベント発火");
+				console.log(io);
 				io.sockets.socket(i).emit('hit_or_stand');
 			}
 		}
