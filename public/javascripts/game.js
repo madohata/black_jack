@@ -305,10 +305,10 @@ window.onload = function() {
 		/**
 		 * TODO:デバッグレシーブ（実験）
 		 */
-		socket.on('debug_receive', function(data) {
-			console.log("デバッグレシーブ : "+data.message);
-			showFunc(data.userList);
-		});
+//		socket.on('debug_receive', function(data) {
+//			console.log("デバッグレシーブ : "+data.message);
+//			showFunc(data.userList);
+//		});
 		/**
 		 * ディーラーのHitStand情報を受け取る
 		 */
