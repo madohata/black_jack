@@ -33,7 +33,7 @@ app.configure('production', function(){
 });
 
 
-app.listen(80);
+app.listen(3000);
 
 
 	 // 最初に配られるチップの数
