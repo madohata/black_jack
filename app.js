@@ -354,9 +354,10 @@ app.listen(3000);
 				console.log("ヒットORスタンド　の質問イベント発火");
 				console.log(io);
 				// TODO: テスト
-				console.log("io.socketsの中身");
-				console.log(io.sockets);
-				io.sockets.socket(i).emit('hit_or_stand');
+				console.log("io.sockets.socket(i)の中身");
+				console.log(io.sockets.socket(i));
+				//io.sockets.socket(i).emit('hit_or_stand');
+				socket.emit('hit_or_stand')
 			}
 		}
 
