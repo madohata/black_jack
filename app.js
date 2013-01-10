@@ -193,6 +193,10 @@ app.listen(3000);
 		 	  	handManager.createHand(socket.id);
 		 	  	var myAccount = userList.getUserData(socket.id);
 		 	  	// 他ユーザークライアントにアカウント情報を知らせる
+		 	  	// TODO: テスト
+		 	  	console.log("socketの中身");
+		 	  	console.loh(socket);
+		 	  	
 		 	  	socket.broadcast.emit('login_announce_other', myAccount);
 		 	  	// 自分のクライアントにアカウント情報を知らせる
 		 	  	socket.emit('login_announce_myself', myAccount);
@@ -400,6 +404,10 @@ app.listen(3000);
 			while(dealer.willHit()) {
 				var card = cards.drawCard();
 				dealer.pushCard( card );
+				// TODO: テスト
+				console.log("io.socketsの中身");
+				console.log(io.sockets);
+				
 				io.sockets.emit('receive_dealer_action', {card:card});
 				console.log("ディーラー連続してカードを引く-----------------------------");
 			}
