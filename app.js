@@ -33,14 +33,14 @@ app.configure('production', function(){
 });
 
 
-app.listen(80);
+app.listen(3000);
 
 
 	 // 最初に配られるチップの数
 	 var INIT_CHIP = 100;
 	 
 	 // Socket.ioの準備
-	 var io = require('socket.io').listen(express.createServer().listen(3000));
+	 var io = require('socket.io').listen(express.createServer().listen(app));
 
 	/**
 	 * ユーザー情報の管理
