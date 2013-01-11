@@ -93,7 +93,7 @@ app.listen(3000);
 
 			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
 			for(var i in userList.getUserDataAll()) {
-				if(userList.canHit(i)) {
+				if(handManager.canHit(i)) {
 					this.setStand(i);
 
 					var countNumber = userList.getUserData(i).countNumber;
