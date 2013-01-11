@@ -89,12 +89,15 @@ app.listen(3000);
 			deal();
 		}
 		// 手番を一つ進める
-		this.eventList["ProggresEvent"] = function() {
+		this.eventList["ProgressEvent"] = function() {
 
 			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
 			for(var i in userList.getUserDataAll()) {
 				if(userList.getUserData(i).canHit()) {
 					this.setStand(i);
+
+					var countNumber = userList.getUserData(i).countNumber;
+			 		io.sockets.emit("stand_announce", {countNumber: countNumber});
 				}
 			}
 		}
