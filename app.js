@@ -151,7 +151,7 @@ app.listen(3000);
 				nameStr += userList.getUserData(i).nickname;
 				nameStr += " : "
 			}
-	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "++"がプレイ中"});
+	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中"});
 	 		return;
 	 	}
 
