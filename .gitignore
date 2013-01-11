@@ -161,3 +161,6 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+##node ninja 用 node_modulesをアップしない
+node_modules
