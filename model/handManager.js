@@ -162,7 +162,7 @@ exports.HandManager = function() {
 
 	/**
 	 * Standかバースト状態か調べる
-	 * （21丁度かバーストしているかスタンド宣言をしているか）
+	 * （バーストしているかスタンド宣言をしているか）
 	 */
 	this.isStanding = function(id) {
 		if (this.calcHand(id) >= 21 || this.isStand(id)) {

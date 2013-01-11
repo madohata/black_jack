@@ -29,7 +29,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+  app.use(express.errorHandler());
 });
 
 
@@ -38,7 +38,7 @@ app.listen(3000);
 
 	 // 最初に配られるチップの数
 	 var INIT_CHIP = 100;
-	 
+
 	 // Socket.ioの準備
 	 var io = require('socket.io').listen(app);
 
@@ -87,6 +87,16 @@ app.listen(3000);
 
 	 		// ディール処理を実行する
 			deal();
+		}
+		// 手番を一つ進める
+		this.eventList["ProggresEvent"] = function() {
+
+			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
+			for(var i in userList.getUserDataAll()) {
+				if(userList.getUserData(i).canHit()) {
+					this.setStand(i);
+				}
+			}
 		}
 
 		// タイマー変数のリスト
@@ -162,9 +172,9 @@ app.listen(3000);
 	 	socket.on('disconnect', function() {
 	 		// ■定義されてない場合は無視---------------------------------------
 	 		if(userList.getUserData(socket.id)) {
-				
+
 		 		 console.log("プレイヤーが切断 : "+userList.getUserData(socket.id).nickname);
-		 		 
+
 		 	 	// 接続が切れたことを全クライアントに通知
 		 	 	io.sockets.emit('user_disconnected', userList.getUserData(socket.id));
 		 	 	// ユーザーリストからデータを削除
@@ -199,7 +209,7 @@ app.listen(3000);
 		 	  	handManager.createHand(socket.id);
 		 	  	var myAccount = userList.getUserData(socket.id);
 		 	  	// 他ユーザークライアントにアカウント情報を知らせる
-		 	  	
+
 		 	  	socket.broadcast.emit('login_announce_other', myAccount);
 		 	  	// 自分のクライアントにアカウント情報を知らせる
 		 	  	socket.emit('login_announce_myself', myAccount);
@@ -264,8 +274,11 @@ app.listen(3000);
 
 		 		// 全員の選択が終わっていたら
 		 		 if(handManager.canNotHitAll()) {
-		 			 // ディーラーの判断をする
-		 			 dealerTurn();
+
+		 		 	// 進行管理者に設定されている進行イベントをキャンセル
+		 		 	timeKeeper.cancelEvent('ProgressEvent');
+		 			// ディーラーの判断をする
+		 			dealerTurn();
 		 		 }
 	 		 }
 	 		 // ■受け取るのはゲーム進行中のみ----------------------------------------
@@ -287,12 +300,15 @@ app.listen(3000);
 
 		 		 //
 		 		 if(handManager.canNotHitAll()) {
+
+		 		 	// 進行管	設定されている進行イベントをキャンセル
+		 		 	timeKeeper.cancelEvent('ProgressEvent');
 		 			dealerTurn();
 		 		 }
 		 	}
 	 		// ■受け取るのはゲーム進行中のみ----------------------------------------
 	 	 });
-	 	 
+
 	 	 /**
 	 	  * メッセージを送信する
 	 	  */
@@ -308,7 +324,7 @@ app.listen(3000);
 			   }
 			}
 			console.log(msgLog);
-			
+
 			data.nickname = userList.getUserData(socket.id).nickname;
 
 			// for all: io.sockets.emit()
@@ -368,6 +384,7 @@ app.listen(3000);
 		}
 
 
+		var isAllUserHandComplete = true;
 		for(var i in userList.getUserDataAll()) {
 			var mineHand = handManager.getCardList(i); // 自分の手札
 			var canHit = handManager.canHit(i);	// HIT可能かどうか
@@ -376,10 +393,18 @@ app.listen(3000);
 			console.log("+++++++++canhit判定+++++++++++++++++++++++");
 			if(canHit) {
 				io.sockets.socket(i).emit('hit_or_stand');
+				isAllUserHandComplete = false;
 			}
 		}
 
-
+		// 1人でもヒット可能ならタイマーを設定する
+		if(isAllUserHandComplete == false) {
+		{
+			// 1ターン制限時間までのタイマーを登録
+			timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
+		 	// 1ターン制限時間までの制限時間を送信
+			io.sockets.emit('receve_standby_time_limit', {time:30});
+		}
 	}
 	/**
 	 * ディーラーの判断
@@ -426,7 +451,7 @@ app.listen(3000);
 			while(dealer.willHit()) {
 				var card = cards.drawCard();
 				dealer.pushCard( card );
-				
+
 				io.sockets.emit('receive_dealer_action', {card:card});
 				console.log("ディーラー連続してカードを引く-----------------------------");
 			}
@@ -435,6 +460,11 @@ app.listen(3000);
 			console.log("ディーラーは点数計算に移行する-----------------------------");
 			// 勝負に移す
 			judge();
+		} else {
+			  // 1ターン制限時間までのタイマーを登録
+		 	  timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
+		 	  // 1ターン制限時間までの制限時間を送信
+		 	  io.sockets.emit('receve_standby_time_limit', {time:30});
 		}
 
 		// まだ手札が完成していないユーザーがいたら再度応答を待つ
