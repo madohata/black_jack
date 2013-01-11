@@ -447,20 +447,10 @@ window.onload = function() {
 
 		},
 		addStandIcon : function() {
-			var label = new Label("<b>Stand!</b>");
-			label.font = "10px Tahoma";
-			label.color = "white";
-			label.x = this.x;
-			label.y = this.y-30;
-			this.addChild("standIcon", label);
+			this.childArray["standIcon"].text = "<b>Stand!</b>";
 		},
 		addBurstIcon : function() {
-			var label = new Label("<b>Burst!</b>");
-			label.font = "10px Tahoma";
-			label.color = "orange";
-			label.x = this.x;
-			label.y = this.y-30;
-			this.addChild("burstIcon", label);
+			this.childArray["burstIcon"].text = "<b>Burst!</b>";
 		},
 		addStatusLabel : function() {
 			var nameLabel = new Label(this.nickname);
@@ -497,6 +487,20 @@ window.onload = function() {
 			cardValueLabel.x = this.x;
 			cardValueLabel.y = this.y-20;
 			this.addChild("cardValueLabel", cardValueLabel);
+
+			var label = new Label("");
+			label.font = "10px Tahoma";
+			label.color = "white";
+			label.x = this.x;
+			label.y = this.y-30;
+			this.addChild("standIcon", label);
+
+			var label = new Label("");
+			label.font = "10px Tahoma";
+			label.color = "orange";
+			label.x = this.x;
+			label.y = this.y-30;
+			this.addChild("burstIcon", label);
 		},
 		// カード合計値ラベルを更新
 		updateCardValueLabel : function(data) {
