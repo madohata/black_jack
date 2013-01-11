@@ -198,17 +198,11 @@ window.onload = function() {
 					// 二枚目
 					otherList[i].addCard(0, 0, true);
 
-
-
-					// 基本ステータスの表示
-					otherList[i].addStatusLabel();
-
 				} else if(i == myAccount.countNumber) {
 					// ユーザーユニットに登録
 					myAccount.addCard(data.mineHand[0].suit, data.mineHand[0].number, false);
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
-					myAccount.addStatusLabel();
 					myAccount.updateCardValueLabel({cardValue : "合計値"+data.sumValue});
 
 					if(data.isBlackJack) {
@@ -551,6 +545,11 @@ window.onload = function() {
 				delete this.childArray["userCard_"+i];
 			}
 			this.cardList = new Array();
+
+			this.childArray["betLabel"].text = "";
+			this.childArray["standIcon"].text = "";
+			this.childArray["burstIcon"].text = "";
+
 		}
 	});
 
