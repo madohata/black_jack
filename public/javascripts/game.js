@@ -281,9 +281,9 @@ window.onload = function() {
 			resultButton = new ResultButton(game.width/2+50, 150);
 			resultButton.addEventListener('touchend', function() {
 				// ユーザーユニットのハンドを初期化
-				myAccount.deleteChild();
+				myAccount.deleteCardData();
 				for(var i in otherList) {
-					otherList[i].deleteChild();
+					otherList[i].deleteCardData();
 				}
 
 				// ディーラーのハンドを初期化
