@@ -396,7 +396,8 @@ app.listen(3000);
 		for(var i in userList.getUserDataAll()) {
 			var mineHand = handManager.getCardList(i); // 自分の手札
 			var canHit = handManager.canHit(i);	// HIT可能かどうか
-			io.sockets.socket(i).emit('receive_deal_data', {openHand:openHand, dealerHand:dealerHand, mineHand:mineHand, canHit: canHit});
+			var isBlackJack = handManager.isBlackJack(i)
+			io.sockets.socket(i).emit('receive_deal_data', {openHand:openHand, dealerHand:dealerHand, mineHand:mineHand, canHit: canHit, sumValue : handManager.calcHand(i), isBlackJack: isBlackJack});
 			// Hit出来るユーザーには選択肢を提示
 			console.log("+++++++++canhit判定+++++++++++++++++++++++");
 			if(canHit) {

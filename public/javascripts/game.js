@@ -200,6 +200,11 @@ window.onload = function() {
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
 					myAccount.addStatusLabel();
+					myAccount.updateStatusLabel({cardValue : data.sumValue});
+
+					if(data.isBlackJack) {
+						myAccount.updateStatusLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
+					}
 				}
 			}
 		});
@@ -212,6 +217,7 @@ window.onload = function() {
 			// TODO:席をクライアント側で登録する
 			addLog("カードを受け取りました。 : "+data.card.suitStr+"の"+data.card.number);
 			addLog("合計"+data.sum+"です");
+			otherList[i].updateStatusLabel({cardValue : data.sum});
 			if(data.isBurst) {
 				addLog("バーストしました！");
 				myAccount.addBurstIcon();
@@ -401,7 +407,7 @@ window.onload = function() {
 			// ステータスラベルを作成
 			this.addStatusLabel();
 		},
-		addCard : function(suit, number, faceDownFlag) {
+		addCard : function(suit, number, faceDownFlag, cardValue) {
 			cardNum = this.cardList.length;
 			var card =  new Trump(this.x + cardNum%2 * 30, this.y + Math.floor(cardNum/2) * 40, suit, number);
 			if(faceDownFlag) {
@@ -410,8 +416,11 @@ window.onload = function() {
 			}
 			this.cardList.push(card);
 			// 描画物として追加
-			this.addChild("userCard_"+cardNum, card); // 何かしら一意の名前を付ける・・・
-		},
+			this.addChild("userCard_"+cardNum, card);
+
+			// カードの合計数
+			cardValueLabel.text = cardValue;
+
 		addStandIcon : function() {
 			var label = new Label("<b>Stand!</b>");
 			label.font = "16 px Tahoma";
@@ -449,6 +458,16 @@ window.onload = function() {
 			seatNumberLabel.x = this.x;
 			seatNumberLabel.y = this.y-30;
 			this.addChild("seatLabel", seatNumberLabel);
+
+			var cardValueLabel = new Label("");
+			cardValueLabel.font = "20px Tahoma";
+			cardValueLabel.color = "white";
+			cardValueLabel.x = this.x;
+			cardValueLabel.y = this.y-700;
+			this.addChild("cardValueLabel", cardValueLabel);
+		},
+		updateStatusLabel : function(data) {
+			this.childArray["cardValueLabel"] = data.cardValue;
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;
