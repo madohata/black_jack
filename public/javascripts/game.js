@@ -546,9 +546,9 @@ window.onload = function() {
 		deleteCardData : function() {
 			for(var i in this.cardList) {
 				// 描画物として追加
-				game.rootScene.removeChild("userCard_"+i);
+				game.rootScene.removeChild(this.childArray["userCard_"+i]);
 
-				delete childArray["userCard_"+i];
+				delete this.childArray["userCard_"+i];
 			}
 			this.cardList = new Array();
 		}
