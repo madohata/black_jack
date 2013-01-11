@@ -140,7 +140,13 @@ exports.UserList = function () {
 	 * 現在のプレイヤー数を取得する
 	 */
 	this.getUserNum = function() {
-		return this.userList.length;
+		var num = 0;
+		for(var i in this.userList) {
+			if(this.userList[i]) { // 空でなければカウント
+				num++;
+			}
+		}
+		return num;
 	}
 
 	/**

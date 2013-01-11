@@ -191,6 +191,10 @@ app.listen(3000);
 		 	 	handManager.deleteHand(socket.id);
 
 		 	 	// TODO:ユーザーが抜けた場合、進行不能とならないようあらゆるケースの対策をとる
+		 	 	// もしユーザーが0になってしまったら、進行中フラグをfalseに戻しておく
+		 	 	if(userList.getUserNum() == 0) {
+		 	 		isOngoing = false;
+		 	 	}
 		 	 	// 全員がHITできない状態ならそのまま勝負を実行する
 		 		 if(handManager.canNotHitAll()) {
 		 			 judge();
