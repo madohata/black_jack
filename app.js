@@ -94,7 +94,7 @@ app.listen(3000);
 			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
 			for(var i in userList.getUserDataAll()) {
 				if(handManager.canHit(i)) {
-					this.setStand(i);
+					handManager.setStand(i);
 
 					var countNumber = userList.getUserData(i).countNumber;
 			 		io.sockets.emit("stand_announce", {countNumber: countNumber});

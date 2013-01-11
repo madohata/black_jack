@@ -253,8 +253,11 @@ window.onload = function() {
 			// ディーラーのホールドカードを公開
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
 
-			// TODO:テスト表示　現在のおチップ情勢を表示
+			// チップを表示
 			console.log("現在のあなたのチップは"+data.testNowtChip+"です");
+			var buf = '<span style="color: #00F"> announce :</span> ';
+			buf += "現在のあなたのチップは"+data.testNowtChip+"です" + '<br/>';
+			$("#console").html(buf + $("#console").html());
 
 			// ボタン
 			resultButton = new ResultButton(game.width/2+50, 150);
