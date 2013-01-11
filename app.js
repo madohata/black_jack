@@ -146,7 +146,12 @@ app.listen(3000);
 	 	if(isOngoing) {
 	 		// TODO: メッセージをクライアントに表示させよう
 	 		console.log("ゲーム進行中のため参加不可");
-	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません"});
+	 		var nameStr = "";
+	 		for(var i in userList.getUserDataAll()) {
+				nameStr += userList.getUserData(i).nickname;
+				nameStr += " : "
+			}
+	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "++"がプレイ中"});
 	 		return;
 	 	}
 
@@ -157,7 +162,9 @@ app.listen(3000);
 	 	socket.on('disconnect', function() {
 	 		// ■定義されてない場合は無視---------------------------------------
 	 		if(userList.getUserData(socket.id)) {
-
+				
+		 		 console.log("プレイヤーが切断 : "+userList.getUserData(socket.id).nickname);
+		 		 
 		 	 	// 接続が切れたことを全クライアントに通知
 		 	 	io.sockets.emit('user_disconnected', userList.getUserData(socket.id));
 		 	 	// ユーザーリストからデータを削除
@@ -187,7 +194,7 @@ app.listen(3000);
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
 		 	  	console.log("かね！！"+userList.getUserData(socket.id).chip+"=====================================");
-		 	  	console.log("ユーザーを登録-"+socket.id+"--------------------------------------------------")
+		 	  	console.log("ユーザーを登録- : "+data.nickname+" : "+socket.id+"--------------------------------------------------")
 		 	  	// 手札リストにユーザーの手札を追加
 		 	  	handManager.createHand(socket.id);
 		 	  	var myAccount = userList.getUserData(socket.id);
