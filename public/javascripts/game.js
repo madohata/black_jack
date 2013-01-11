@@ -437,9 +437,7 @@ window.onload = function() {
 			// 描画物として追加
 			this.addChild("userCard_"+cardNum, card);
 
-			// カードの合計数
-			cardValueLabel.text = cardValue;
-
+		},
 		addStandIcon : function() {
 			var label = new Label("<b>Stand!</b>");
 			label.font = "16 px Tahoma";
