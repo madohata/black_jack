@@ -400,7 +400,6 @@ app.listen(3000);
 
 		// 1人でもヒット可能ならタイマーを設定する
 		if(isAllUserHandComplete == false) {
-		{
 			// 1ターン制限時間までのタイマーを登録
 			timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
 		 	// 1ターン制限時間までの制限時間を送信
@@ -509,7 +508,7 @@ app.listen(3000);
 
 			} else {
 				// 負け
-				message = "負けました"+" : ディーラー="+dealerValue+"あなた="+userValue;
+				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
 				userList.refund(i, 0);
 			}
 
