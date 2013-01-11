@@ -473,35 +473,35 @@ window.onload = function() {
 			nameLabel.font = "10 px Tahoma";
 			nameLabel.color = "white";
 			nameLabel.x = this.x;
-			nameLabel.y = this.y-50;
+			nameLabel.y = this.y-70;
 			this.addChild("nameLabel", nameLabel);
 
-			var chipLabel = new Label("持ちチップ : "+this.chip);
+			var chipLabel = new Label("");
 			chipLabel.font = "10 px Tahoma";
 			chipLabel.color = "white";
 			chipLabel.x = this.x;
-			chipLabel.y = this.y-40;
+			chipLabel.y = this.y-60;
 			this.addChild("chipLabel", chipLabel);
 
 			var betLabel = new Label("");
 			betLabel.font = "10 px Tahoma";
 			betLabel.color = "white";
 			betLabel.x = this.x;
-			betLabel.y = this.y-40;
+			betLabel.y = this.y-50;
 			this.addChild("betLabel", betLabel);
 
 			var seatNumberLabel = new Label("席 : "+this.countNumber);
 			seatNumberLabel.font = "10 px Tahoma";
 			seatNumberLabel.color = "white";
 			seatNumberLabel.x = this.x;
-			seatNumberLabel.y = this.y-30;
+			seatNumberLabel.y = this.y-40;
 			this.addChild("seatLabel", seatNumberLabel);
 
 			var cardValueLabel = new Label("");
 			cardValueLabel.font = "20px Tahoma";
 			cardValueLabel.color = "white";
 			cardValueLabel.x = this.x;
-			cardValueLabel.y = this.y-700;
+			cardValueLabel.y = this.y-30;
 			this.addChild("cardValueLabel", cardValueLabel);
 		},
 		// カード合計値ラベルを更新
@@ -510,11 +510,11 @@ window.onload = function() {
 		},
 		// 賭けチップラベルを更新
 		updateBetLabel : function(value) {
-			//this.childArray["betLabel"].text = "持ちチップ : "+value;
+			//this.childArray["betLabel"].text = "賭けチップ : "+value;
 		},
 		// 持ちチップラベルを更新
 		updateChipLabel : function(value) {
-			this.childArray["chipLabel"].text = "賭けチップ : "+value;
+			this.childArray["chipLabel"].text = "持ちチップ : "+value;
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;
