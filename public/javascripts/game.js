@@ -156,9 +156,9 @@ window.onload = function() {
 
 			// 結果画面　→　ディールステート、と直接移動する事があるので、手札情報を初期化
 			// ユーザーユニットのハンドを初期化
-			myAccount.deleteChild();
+			myAccount.deleteCardData();
 			for(var i in otherList) {
-				otherList[i].deleteChild();
+				otherList[i].deleteCardData();
 			}
 
 			// ディーラーのハンドを初期化
@@ -510,7 +510,7 @@ window.onload = function() {
 		},
 		// 賭けチップラベルを更新
 		updateBetLabel : function(value) {
-			//this.childArray["betLabel"].text = "賭けチップ : "+value;
+			this.childArray["betLabel"].text = "賭けチップ : "+value;
 		},
 		// 持ちチップラベルを更新
 		updateChipLabel : function(value) {
@@ -541,7 +541,16 @@ window.onload = function() {
 
 			this.childArray = new Array();
 			this.cardList = new Array();
-			console.lot("テスト：ちゃいるどさくじょ");
+		},
+		// カードだけ削除
+		deleteCardData : function() {
+			for(var i in this.cardList) {
+				// 描画物として追加
+				game.rootScene.removeChild("userCard_"+i, card);
+
+				delete childArray["userCard_"+i];
+			}
+			this.cardList = new Array();
 		}
 	});
 
