@@ -233,6 +233,9 @@ window.onload = function() {
 		socket.on('stand_announce', function(data) {
 			if(myAccount.countNumber == data.countNumber) {
 				myAccount.addStandIcon();
+
+				stateManager.removeChild('hitButton');
+				stateManager.removeChild('standButton');
 			} else {
 				otherList[data.countNumber].addStandIcon();
 			}

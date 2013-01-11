@@ -98,6 +98,10 @@ app.listen(3000);
 
 					var countNumber = userList.getUserData(i).countNumber;
 			 		io.sockets.emit("stand_announce", {countNumber: countNumber});
+
+			 		if(handManager.canNotHitAll()) {
+			 			dealerTurn();
+			 		 }
 				}
 			}
 		}
