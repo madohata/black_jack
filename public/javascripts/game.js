@@ -209,7 +209,7 @@ window.onload = function() {
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
 					myAccount.addStatusLabel();
-					myAccount.updateCardValuel({cardValue : "合計値"+data.sumValue});
+					myAccount.updateCardValueLabel({cardValue : "合計値"+data.sumValue});
 
 					if(data.isBlackJack) {
 						myAccount.updateCardValueLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
@@ -225,7 +225,7 @@ window.onload = function() {
 			// 追加されたカードを描画する
 			// TODO:席をクライアント側で登録する
 			addLog("カードを受け取りました。 : "+data.card.suitStr+"の"+data.card.number);
-			addL.og("合計"+data.sum+"です");
+			addLog("合計"+data.sum+"です");
 			myAccount.updateCardValueLabel({cardValue : "合計値"+data.sum});
 			if(data.isBurst) {
 				addLog("バーストしました！");
