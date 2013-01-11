@@ -120,13 +120,13 @@ window.onload = function() {
 				console.log("ログアウトしたユーザを削除");
 			}
 		});
-		
+
 		/** スタンバイステート *************************************************************/
 		/**
 		 * アラートメッセージを表示するイベントリスナ
 		 */
 		socket.on('alert_message', function(data) {
-			
+
 			window.alert(data.message);
 
 		});
@@ -277,6 +277,7 @@ window.onload = function() {
 		 * ディール開始までの制限時間を受け取る
 		 */
 		socket.on('receive_standby_time_limit', function(data) {
+			console.log("test");
 			var label = new Label("<b>ゲーム開始まで"+data.time+"秒</b>");
 			label.x = 100;
 			label.y = 120;
@@ -291,6 +292,7 @@ window.onload = function() {
 
 			stateManager.addChild("standbyTimeLimitLabel", label);
 		});
+
 		/**
 		 * デッキの状態を受け取る
 		 */
@@ -345,7 +347,7 @@ window.onload = function() {
 			});
 			stateManager.addChild("standButton", standButton);
 		});
-		
+
 		/**
 		 * チャットメッセージを受け取る #console :IDの付いたDOMに送る
 		 */
@@ -749,5 +751,5 @@ window.onload = function() {
 			showFunc(data[i]);
 		}
 	}
-	
+
 }
