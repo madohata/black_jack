@@ -510,7 +510,7 @@ window.onload = function() {
 		},
 		// 賭けチップラベルを更新
 		updateBetLabel : function(value) {
-			this.childArray["betLabel"].text = "持ちチップ : "+value;
+			//this.childArray["betLabel"].text = "持ちチップ : "+value;
 		},
 		// 持ちチップラベルを更新
 		updateChipLabel : function(value) {
