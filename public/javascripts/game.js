@@ -465,7 +465,7 @@ window.onload = function() {
 			label.font = "20 px Tahoma";
 			label.color = "orange";
 			label.x = this.x;
-			label.y = this.y-30;
+			label.y = this.y-20;
 			this.addChild("burstIcon", label);
 		},
 		addStatusLabel : function() {
@@ -498,8 +498,8 @@ window.onload = function() {
 			this.addChild("seatLabel", seatNumberLabel);
 
 			var cardValueLabel = new Label("");
-			cardValueLabel.font = "20px Tahoma";
-			cardValueLabel.color = "white";
+			cardValueLabel.font = "13px Tahoma";
+			cardValueLabel.color = "orange";
 			cardValueLabel.x = this.x;
 			cardValueLabel.y = this.y-30;
 			this.addChild("cardValueLabel", cardValueLabel);
@@ -550,7 +550,7 @@ window.onload = function() {
 	var DealerHand = function() {
 		this.handArray = new Array();
 		this.holdCard;
-		this.x = game.width/2
+		this.x = 85;
 		this.y = game.height*0.1
 
 		// dealState
