@@ -156,20 +156,21 @@ app.listen(3000);
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 	 	if(! userList.isEmptySeat()) {
 	 		console.log("テーブルに空きがないため参加不可");
-	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません"});
+	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
 	 		return;
 	 	}
 
 	 	if(isOngoing) {
 	 		// TODO: メッセージをクライアントに表示させよう
 	 		var nameStr = "";
+	 		var num;
 	 		for(var i in userList.getUserDataAll()) {
 				nameStr += userList.getUserData(i).nickname;
 				nameStr += " : ";
 				console.log("入室中ID"+i);
 			}
 	 		console.log("ゲーム進行中のため参加不可");
-	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中"});
+	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
 	 		return;
 	 	}
 
@@ -194,6 +195,7 @@ app.listen(3000);
 		 	 	// もしユーザーが0になってしまったら、進行中フラグをfalseに戻しておく
 		 	 	if(userList.getUserNum() == 0) {
 		 	 		isOngoing = false;
+		 	 		console.log("++++++++++++++++++++++++++++０にん切断！！！！！！！！！！！！！！！！！！")
 		 	 	}
 		 	 	// 全員がHITできない状態ならそのまま勝負を実行する
 		 		 if(handManager.canNotHitAll()) {

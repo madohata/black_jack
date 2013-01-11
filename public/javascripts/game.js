@@ -446,12 +446,6 @@ window.onload = function() {
 			this.addChild("userCard_"+cardNum, card);
 
 		},
-		addStandIcon : function() {
-			this.childArray["standIcon"].text = "<b>Stand!</b>";
-		},
-		addBurstIcon : function() {
-			this.childArray["burstIcon"].text = "<b>Burst!</b>";
-		},
 		addStatusLabel : function() {
 			var nameLabel = new Label(this.nickname);
 			nameLabel.font = "10 px Tahoma";
@@ -513,6 +507,12 @@ window.onload = function() {
 		// 持ちチップラベルを更新
 		updateChipLabel : function(value) {
 			this.childArray["chipLabel"].text = "持ちチップ : "+value;
+		},
+		addStandIcon : function() {
+			this.childArray["standIcon"].text = "<b>Stand!</b>";
+		},
+		addBurstIcon : function() {
+			this.childArray["burstIcon"].text = "<b>Burst!</b>";
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;
