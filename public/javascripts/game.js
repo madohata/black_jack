@@ -140,7 +140,7 @@ window.onload = function() {
 			otherList[data.countNumber].updateBetLabel(data.betChip);
 
 		});
-		socket.on('standby_announce', function(data) {
+		socket.on('myAccount_standby_announce', function(data) {
 
 			addLog("ベットを受け付けました。"+data.betChip+"チップでのゲームです。");
 
@@ -510,11 +510,11 @@ window.onload = function() {
 		},
 		// 賭けチップラベルを更新
 		updateBetLabel : function(value) {
-			this.betLabel.text = "持ちチップ : "+value;
+			this.childArray["betLabel"].text = "持ちチップ : "+value;
 		},
 		// 持ちチップラベルを更新
 		updateChipLabel : function(value) {
-			this.chipLabel.text = "賭けチップ : "+value;
+			this.childArray["chipLabel"].text = "賭けチップ : "+value;
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;
