@@ -221,7 +221,7 @@ app.listen(3000);
 		 	  	// ディール開始までのタイマーを登録
 		 	  	timeKeeper.registEvent("DealEvent", 30000); // 30秒
 		 	  	// ディール開始までの制限時間を送信
-		 	  	io.sockets.emit('receve_standby_time_limit', {time:30});
+		 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
 		 	  	// デッキの状態をクライアントに送信
 		 	  	socket.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
 	 		}
@@ -406,7 +406,7 @@ app.listen(3000);
 			// 1ターン制限時間までのタイマーを登録
 			timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
 		 	// 1ターン制限時間までの制限時間を送信
-			io.sockets.emit('receve_standby_time_limit', {time:30});
+			io.sockets.emit('receive_standby_time_limit', {time:30});
 		}
 	}
 	/**
@@ -467,7 +467,7 @@ app.listen(3000);
 			  // 1ターン制限時間までのタイマーを登録
 		 	  timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
 		 	  // 1ターン制限時間までの制限時間を送信
-		 	  io.sockets.emit('receve_standby_time_limit', {time:30});
+		 	  io.sockets.emit('receive_standby_time_limit', {time:30});
 		}
 
 		// まだ手札が完成していないユーザーがいたら再度応答を待つ
