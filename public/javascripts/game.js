@@ -492,7 +492,7 @@ window.onload = function() {
 			standLabel.font = "10px Tahoma";
 			standLabel.color = "white";
 			standLabel.x = this.x;
-			standLlabel.y = this.y-30;
+			standLabel.y = this.y-30;
 			this.addChild("standIcon", standLabel);
 
 			var burstLabel = new Label("");
