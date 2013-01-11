@@ -304,6 +304,25 @@ window.onload = function() {
 
 			stateManager.addChild("standbyTimeLimitLabel", label);
 		});
+		/**
+		 * HitオアStandの制限時間を受け取る
+		 */
+		socket.on('receive_hit_or_stand_time_limit', function(data) {
+			console.log("test");
+			var label = new Label("<b>Hit or Stand ?"+data.time+"秒</b>");
+			label.x = 100;
+			label.y = 120;
+			label.color = "Black";
+			label.timer = data.time;
+			label.addEventListener('enterframe', function() {
+				if(game.frame%game.fps == 0) {
+					this.timer--;
+					this.text = "<b>Hit or Stand ?"+this.timer+"秒</b>"
+				}
+			});
+
+			stateManager.addChild("standbyTimeLimitLabel", label);
+		});
 
 		/**
 		 * デッキの状態を受け取る
