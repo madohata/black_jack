@@ -172,6 +172,12 @@ window.onload = function() {
 			sheet.y=0;
 			stateManager.addChild("sheet", sheet);
 
+			// 背景に埋もれてしまうためラベルを前面に移動させる
+			myAccount.frontLabel();
+			for(var i in otherList) {
+				otherList[i].frontLabel();
+			}
+
 			for (var i in data.openHand) {
 				if(i != myAccount.countNumber && data.openHand[i]) {
 					console.log(i);
@@ -482,23 +488,44 @@ window.onload = function() {
 			cardValueLabel.y = this.y-20;
 			this.addChild("cardValueLabel", cardValueLabel);
 
-			var label = new Label("");
-			label.font = "10px Tahoma";
-			label.color = "white";
-			label.x = this.x;
-			label.y = this.y-30;
-			this.addChild("standIcon", label);
+			var standLabel = new Label("");
+			standLabel.font = "10px Tahoma";
+			standLabel.color = "white";
+			standLabel.x = this.x;
+			standLlabel.y = this.y-30;
+			this.addChild("standIcon", standLabel);
 
-			var label = new Label("");
-			label.font = "10px Tahoma";
-			label.color = "orange";
-			label.x = this.x;
-			label.y = this.y-30;
-			this.addChild("burstIcon", label);
+			var burstLabel = new Label("");
+			burstLabel.font = "10px Tahoma";
+			burstLabel.color = "orange";
+			burstLabel.x = this.x;
+			burstLabel.y = this.y-30;
+			this.addChild("burstIcon", burstLabel);
 		},
 		// カード合計値ラベルを更新
 		updateCardValueLabel : function(data) {
 			this.childArray["cardValueLabel"].text = data.cardValue;
+		},
+		// TODO: 重いようなら別の方法に切り替える
+		// ラベルを最前面に移動する
+		frontLabel : function() {
+			game.rootScene.removeChild(this.childArray["nameLabel"]);
+			game.rootScene.removeChild(this.childArray["chipLabel"]);
+			game.rootScene.removeChild(this.childArray["betLabel"]);
+			game.rootScene.removeChild(this.childArray["seatLabel"]);
+			game.rootScene.removeChild(this.childArray["cardValueLabel"]);
+			game.rootScene.removeChild(this.childArray["betLabel"]);
+			game.rootScene.removeChild(this.childArray["standIcon"]);
+			game.rootScene.removeChild(this.childArray["burstIcon"]);
+
+			game.rootScene.addChild(this.childArray["nameLabel"]);
+			game.rootScene.addChild(this.childArray["chipLabel"]);
+			game.rootScene.addChild(this.childArray["betLabel"]);
+			game.rootScene.addChild(this.childArray["seatLabel"]);
+			game.rootScene.addChild(this.childArray["cardValueLabel"]);
+			game.rootScene.addChild(this.childArray["betLabel"]);
+			game.rootScene.addChild(this.childArray["standIcon"]);
+			game.rootScene.addChild(this.childArray["burstIcon"]);
 		},
 		// 賭けチップラベルを更新
 		updateBetLabel : function(value) {
