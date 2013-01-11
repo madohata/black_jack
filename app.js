@@ -163,11 +163,12 @@ app.listen(3000);
 	 	if(isOngoing) {
 	 		// TODO: メッセージをクライアントに表示させよう
 	 		var nameStr = "";
-	 		var num;
+	 		var num = 0;
 	 		for(var i in userList.getUserDataAll()) {
 				nameStr += userList.getUserData(i).nickname;
 				nameStr += " : ";
 				console.log("入室中ID"+i);
+				num++;
 			}
 	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
@@ -195,7 +196,7 @@ app.listen(3000);
 		 	 	// もしユーザーが0になってしまったら、進行中フラグをfalseに戻しておく
 		 	 	if(userList.getUserNum() == 0) {
 		 	 		isOngoing = false;
-		 	 		console.log("++++++++++++++++++++++++++++０にん切断！！！！！！！！！！！！！！！！！！")
+		 	 		console.log("++++++++++++++++++++++++++++０にん切断！！！！！！！！！！！！！！！！！！");
 		 	 	}
 		 	 	// 全員がHITできない状態ならそのまま勝負を実行する
 		 		 if(handManager.canNotHitAll()) {
