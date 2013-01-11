@@ -514,7 +514,6 @@ window.onload = function() {
 			game.rootScene.removeChild(this.childArray["betLabel"]);
 			game.rootScene.removeChild(this.childArray["seatLabel"]);
 			game.rootScene.removeChild(this.childArray["cardValueLabel"]);
-			game.rootScene.removeChild(this.childArray["betLabel"]);
 			game.rootScene.removeChild(this.childArray["standIcon"]);
 			game.rootScene.removeChild(this.childArray["burstIcon"]);
 
@@ -523,7 +522,6 @@ window.onload = function() {
 			game.rootScene.addChild(this.childArray["betLabel"]);
 			game.rootScene.addChild(this.childArray["seatLabel"]);
 			game.rootScene.addChild(this.childArray["cardValueLabel"]);
-			game.rootScene.addChild(this.childArray["betLabel"]);
 			game.rootScene.addChild(this.childArray["standIcon"]);
 			game.rootScene.addChild(this.childArray["burstIcon"]);
 		},
