@@ -155,12 +155,13 @@ app.listen(3000);
 
 	 	if(isOngoing) {
 	 		// TODO: メッセージをクライアントに表示させよう
-	 		console.log("ゲーム進行中のため参加不可");
 	 		var nameStr = "";
 	 		for(var i in userList.getUserDataAll()) {
 				nameStr += userList.getUserData(i).nickname;
-				nameStr += " : "
+				nameStr += " : ";
+				console.log("入室中ID"+i);
 			}
+	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中"});
 	 		return;
 	 	}
