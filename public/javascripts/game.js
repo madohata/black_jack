@@ -137,6 +137,15 @@ window.onload = function() {
 
 			addLog(otherList[data.countNumber].nickname+"さんが準備を完了しました。ベット額は"+data.betChip+"です");
 
+			otherList[data.countNumber].updateBetLabel(data.betChip);
+
+		});
+		socket.on('standby_announce', function(data) {
+
+			addLog("ベットを受け付けました。"+data.betChip+"チップでのゲームです。");
+
+			myAccount.updateBetLabel(data.betChip);
+
 		});
 		/** ディールステート *************************************************************/
 		/**
@@ -200,10 +209,10 @@ window.onload = function() {
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
 					myAccount.addStatusLabel();
-					myAccount.updateStatusLabel({cardValue : "合計値"+data.sumValue});
+					myAccount.updateCardValuel({cardValue : "合計値"+data.sumValue});
 
 					if(data.isBlackJack) {
-						myAccount.updateStatusLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
+						myAccount.updateCardValueLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
 					}
 				}
 			}
@@ -217,7 +226,7 @@ window.onload = function() {
 			// TODO:席をクライアント側で登録する
 			addLog("カードを受け取りました。 : "+data.card.suitStr+"の"+data.card.number);
 			addL.og("合計"+data.sum+"です");
-			myAccount.updateStatusLabel({cardValue : "合計値"+data.sum});
+			myAccount.updateCardValueLabel({cardValue : "合計値"+data.sum});
 			if(data.isBurst) {
 				addLog("バーストしました！");
 				myAccount.addBurstIcon();
@@ -263,10 +272,10 @@ window.onload = function() {
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
 
 			// チップを表示
-			console.log("現在のあなたのチップは"+data.testNowtChip+"です");
-			var buf = '<span style="color: #00F"> announce :</span> ';
-			buf += "現在のあなたのチップは"+data.testNowtChip+"です" + '<br/>';
-			$("#console").html(buf + $("#console").html());
+			addLog("現在のあなたのチップは"+data.testNowtChip+"です" + '<br/>');
+
+			myAccount.updateChipLabel(data.testNowtChip);
+			myAccount.updateBetLabel("");
 
 			// ボタン
 			resultButton = new ResultButton(game.width/2+50, 150);
@@ -407,6 +416,11 @@ window.onload = function() {
 		// 最新のメッセージをログの先頭に付け加える
 		//logLabel.text = message + "<br>" + logLabel.text;
 		// TODO: n件以上は表示されないよう調整する
+
+		// 下のチャットスペースにログを出力する
+		var buf = '<span style="color: #00F"> announce :</span> ';
+		buf += message + '<br/>';
+		$("#console").html(buf + $("#console").html());
 	}
 
 	/**
@@ -462,12 +476,19 @@ window.onload = function() {
 			nameLabel.y = this.y-50;
 			this.addChild("nameLabel", nameLabel);
 
-			var chipLabel = new Label("チップ : "+this.chip);
+			var chipLabel = new Label("持ちチップ : "+this.chip);
 			chipLabel.font = "10 px Tahoma";
 			chipLabel.color = "white";
 			chipLabel.x = this.x;
 			chipLabel.y = this.y-40;
 			this.addChild("chipLabel", chipLabel);
+
+			var betLabel = new Label("");
+			betLabel.font = "10 px Tahoma";
+			betLabel.color = "white";
+			betLabel.x = this.x;
+			betLabel.y = this.y-40;
+			this.addChild("betLabel", betLabel);
 
 			var seatNumberLabel = new Label("席 : "+this.countNumber);
 			seatNumberLabel.font = "10 px Tahoma";
@@ -483,8 +504,17 @@ window.onload = function() {
 			cardValueLabel.y = this.y-700;
 			this.addChild("cardValueLabel", cardValueLabel);
 		},
-		updateStatusLabel : function(data) {
+		// カード合計値ラベルを更新
+		updateCardValueLabel : function(data) {
 			this.childArray["cardValueLabel"].text = data.cardValue;
+		},
+		// 賭けチップラベルを更新
+		updateBetLabel : function(value) {
+			this.betLabel.text = "持ちチップ : "+value;
+		},
+		// 持ちチップラベルを更新
+		updateChipLabel : function(value) {
+			this.chipLabel.text = "賭けチップ : "+value;
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;

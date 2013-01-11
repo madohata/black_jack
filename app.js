@@ -245,6 +245,8 @@ app.listen(3000);
 		 		 // 他ユーザーにスタンバイ状態になったことを知らせる
 		 		 socket.broadcast.emit('standby_announce', {countNumber: userList.getUserData(socket.id).countNumber,
 		 			 betChip: data.betChip});
+		 		 // 自分のクライアントに正しくベット出来たことを知らせる
+		 		socket.emit('myAccount_standby_announce', {betChip: data.betChip});
 
 		 		 // 全てのユーザーが準備完了となったか
 		 		 if (userList.allUsersIsStandby()) {
