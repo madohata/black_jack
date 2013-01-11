@@ -200,7 +200,7 @@ window.onload = function() {
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
 					myAccount.addStatusLabel();
-					myAccount.updateStatusLabel({cardValue : data.sumValue});
+					myAccount.updateStatusLabel({cardValue : "合計値"+data.sumValue});
 
 					if(data.isBlackJack) {
 						myAccount.updateStatusLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
@@ -216,8 +216,8 @@ window.onload = function() {
 			// 追加されたカードを描画する
 			// TODO:席をクライアント側で登録する
 			addLog("カードを受け取りました。 : "+data.card.suitStr+"の"+data.card.number);
-			addLog("合計"+data.sum+"です");
-			otherList[i].updateStatusLabel({cardValue : data.sum});
+			addL.og("合計"+data.sum+"です");
+			myAccount.updateStatusLabel({cardValue : "合計値"+data.sum});
 			if(data.isBurst) {
 				addLog("バーストしました！");
 				myAccount.addBurstIcon();
@@ -484,7 +484,7 @@ window.onload = function() {
 			this.addChild("cardValueLabel", cardValueLabel);
 		},
 		updateStatusLabel : function(data) {
-			this.childArray["cardValueLabel"] = data.cardValue;
+			this.childArray["cardValueLabel"].text = data.cardValue;
 		},
 		adjustCard : function() { // カードを定位置に置く //TODO:位置は仮実装
 			rawNum	= 1;
