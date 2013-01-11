@@ -454,7 +454,7 @@ window.onload = function() {
 		},
 		addStandIcon : function() {
 			var label = new Label("<b>Stand!</b>");
-			label.font = "16 px Tahoma";
+			label.font = "10px Tahoma";
 			label.color = "white";
 			label.x = this.x;
 			label.y = this.y-30;
@@ -462,10 +462,10 @@ window.onload = function() {
 		},
 		addBurstIcon : function() {
 			var label = new Label("<b>Burst!</b>");
-			label.font = "20 px Tahoma";
+			label.font = "10px Tahoma";
 			label.color = "orange";
 			label.x = this.x;
-			label.y = this.y-20;
+			label.y = this.y-30;
 			this.addChild("burstIcon", label);
 		},
 		addStatusLabel : function() {
@@ -499,9 +499,9 @@ window.onload = function() {
 
 			var cardValueLabel = new Label("");
 			cardValueLabel.font = "13px Tahoma";
-			cardValueLabel.color = "orange";
+			cardValueLabel.color = "white";
 			cardValueLabel.x = this.x;
-			cardValueLabel.y = this.y-30;
+			cardValueLabel.y = this.y-40;
 			this.addChild("cardValueLabel", cardValueLabel);
 		},
 		// カード合計値ラベルを更新
@@ -541,6 +541,7 @@ window.onload = function() {
 
 			this.childArray = new Array();
 			this.cardList = new Array();
+			console.lot("テスト：ちゃいるどさくじょ");
 		}
 	});
 
