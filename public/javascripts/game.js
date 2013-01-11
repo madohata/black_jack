@@ -498,10 +498,10 @@ window.onload = function() {
 			this.addChild("seatLabel", seatNumberLabel);
 
 			var cardValueLabel = new Label("");
-			cardValueLabel.font = "13px Tahoma";
+			cardValueLabel.font = "10px Tahoma";
 			cardValueLabel.color = "white";
 			cardValueLabel.x = this.x;
-			cardValueLabel.y = this.y-40;
+			cardValueLabel.y = this.y-20;
 			this.addChild("cardValueLabel", cardValueLabel);
 		},
 		// カード合計値ラベルを更新
@@ -546,7 +546,7 @@ window.onload = function() {
 		deleteCardData : function() {
 			for(var i in this.cardList) {
 				// 描画物として追加
-				game.rootScene.removeChild("userCard_"+i, card);
+				game.rootScene.removeChild("userCard_"+i);
 
 				delete childArray["userCard_"+i];
 			}
