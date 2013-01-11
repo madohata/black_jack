@@ -209,7 +209,7 @@ window.onload = function() {
 					myAccount.addCard(data.mineHand[1].suit, data.mineHand[1].number, false);
 
 					myAccount.addStatusLabel();
-					myAccount.updateCardValuel({cardValue : "合計値"+data.sumValue});
+					myAccount.updateCardValueLabel({cardValue : "合計値"+data.sumValue});
 
 					if(data.isBlackJack) {
 						myAccount.updateCardValueLabel({cardValue : "Black Jack!<br/> 払戻金が2倍になります！"});
