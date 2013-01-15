@@ -43,7 +43,7 @@ app.listen(3000);
 	 var io = require('socket.io').listen(app);
 
 	 // ioをいったん退避
-	 app.set(io);
+	 app.set('io', io);
 	 // サーバー処理を行うプログラムを呼ぶ
 	 require('./apps/black_jack_app');
 
