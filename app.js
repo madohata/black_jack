@@ -157,7 +157,6 @@ app.listen(3000);
 	 	if(! userList.isEmptySeat()) {
 	 		console.log("テーブルに空きがないため参加不可");
 	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
-	 		return;
 	 	}
 
 	 	// ゲーム進行中の場合途中参加不可
@@ -174,7 +173,7 @@ app.listen(3000);
 
 	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
-	 		return;
+
 	 	}
 
 	 	// サーバサイド　socketioイベントリスナ
@@ -216,7 +215,7 @@ app.listen(3000);
 			 socket.emit('get_login_user_data', {userList: userList.getUserDataAllForClient()});
 
 	 		// ■席が空いてない場合はログインできない------------------------------
-	 		if(userList.isEmptySeat()) {
+	 		if(userList.isEmptySeat() &&  userList.getUserData(socket.id)) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
 		 	  	console.log("かね！！"+userList.getUserData(socket.id).chip+"=====================================");

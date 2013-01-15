@@ -716,7 +716,7 @@ window.onload = function() {
 		initialize : function() {
 			this.stateList = {
 					Standby : new StandbyState({stateManager:this}),
-//					Watch	: new WatchState(),
+					Watch	: new WatchState(),
 					Deal	: new DealState({stateManager:this})
 //					Stand	: new StandState()
 			}
