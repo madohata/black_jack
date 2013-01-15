@@ -8,13 +8,13 @@ io = app.get('io');
 /**
  * ユーザー情報の管理
  */
-var UserList = require('./model/userList').UserList;
+var UserList = require('../model/userList').UserList;
 var userList = new UserList();
 
 /**
  * トランプデータを作成
  */
-var Cards = require('./model/cards').Cards;
+var Cards = require('../model/cards').Cards;
 var cards = new Cards();
 cards.initialize(4); // 4組作成する
 cards.shuffleCards(); // カードをシャッフルする
@@ -22,14 +22,14 @@ cards.shuffleCards(); // カードをシャッフルする
 /**
  * ディーラークラスを作成
  */
-var Dealer = require('./model/dealer').Dealer;
+var Dealer = require('../model/dealer').Dealer;
 var dealer = new Dealer();
 
 /**
  * ハンド管理クラスを作成
  * ハンドリストはユーザーのIDと紐付けるユーザーはハンドIDのみを持つ
  */
-var HandManager = require('./model/handManager').HandManager;
+var HandManager = require('../model/handManager').HandManager;
 var handManager = new HandManager(); // ユーザーデータの作成時に手札を追加し紐付ける
 
 /**
