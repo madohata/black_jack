@@ -1,21 +1,24 @@
 <!--
-  ƒuƒ‰ƒbƒNƒWƒƒƒbƒNƒeƒ“ƒvƒŒ[ƒg
+  ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
  -->
  <html>
 	<head>
-		<!-- ƒT[ƒo[‚Å¶¬‚³‚ê‚½ƒ\ƒPƒbƒgƒf[ƒ^Hi—v’²¸j‚ğ“Ç‚İ‚Ş -->
+		<title>black jack game</title>
+		<!-- css -->
+		<link rel='stylesheet' href='/stylesheets/black_jack.css' />
+		<!-- ã‚µãƒ¼ãƒãƒ¼ã§ç”Ÿæˆã•ã‚ŒãŸã‚½ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ï¼Ÿï¼ˆè¦èª¿æŸ»ï¼‰ã‚’èª­ã¿è¾¼ã‚€ -->
 		<script src="/socket.io/socket.io.js"></script>
-		<!-- •\¦—pƒvƒƒOƒ‰ƒ€‚Ì“Ç‚İ‚İ -->
-		<!-- ƒGƒ“ƒ`ƒƒƒ“ƒgƒ‰ƒCƒuƒ‰ƒŠ‚Ì“Ç‚İ‚İ -->
+		<!-- è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®èª­ã¿è¾¼ã¿ -->
+		<!-- ã‚¨ãƒ³ãƒãƒ£ãƒ³ãƒˆãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®èª­ã¿è¾¼ã¿ -->
 		<script type="text/javascript" src="./javascripts/enchant.js"></script>
-		<!-- ƒQ[ƒ€ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ@-->
+		<!-- ã‚²ãƒ¼ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã€€-->
 		<script type="text/javascript" src="./javascripts/game.js"></script>
-		<!-- ƒ`ƒƒƒbƒg—pJqueryƒ‰ƒCƒuƒ‰ƒŠ -->
+		<!-- ãƒãƒ£ãƒƒãƒˆç”¨Jqueryãƒ©ã‚¤ãƒ–ãƒ©ãƒª -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script>
 			var socket = io.connect('http://madohata.c.node-ninja.com:3000/');
-			
-			// ƒƒbƒZ[ƒW‚ğ‘—‚éŠÖ”
+
+			// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹é–¢æ•°
 			function sendMessage()
 			{
 				socket.emit('chat_message', { message: $('#msg').val(), nickname: "no name"});
@@ -23,20 +26,20 @@
 			}
 		</script>
 	</head>
-		
+
 
 
 
 	<body>
-	<div id="enchant-stage"></div>
-	
+	<div id="enchant-stage" align="center"></div>
+
 		<h1>chat console</h1>
-		 
-		<div id="chatConsole">
+
+		<div id="Chat">
 		</div>
-		
-		
-		 
+
+
+
 		<div>
 		    <input type="text" id="msg"/>
 		    <input type="button" id="sendButton"  onClick="sendMessage()" value="Send Message"/>
