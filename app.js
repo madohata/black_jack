@@ -149,9 +149,9 @@ console.log("+++++++++==================+++++++++++++++++");
 	/**
 	 * "プレイヤー満員"を表すフラグこれがtrueの場合はユーザーを増やさない
 	 */
-	 
+
 	// 現在観客に公開されているカードデータを送信する関数
-	var receiveOpenHand = function() {
+	var getOpenHand = function() {
 		// 現在場に公開されているカードを送信
  		var openHand = new Array();
 		for( var i in userList.getUserDataAll() ) {
@@ -161,9 +161,10 @@ console.log("+++++++++==================+++++++++++++++++");
 		}
 		var dealerHand = dealer.getHand();
 		
- 		socket.emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
+		return {openHand:openHand, dealerHand:dealerHand};
+		
+ 		
 	}
-
 
 	/**
 	 * 通信イベントリスナ登録
@@ -173,7 +174,6 @@ console.log("+++++++++==================+++++++++++++++++");
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
 	 	
-
 		
 		
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
@@ -182,7 +182,7 @@ console.log("+++++++++==================+++++++++++++++++");
 	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
 	 		
 	 		// 現在のハンド状況を送信
-	 		receiveOpenHand();
+	 		socket.emit('watch_mode_receive_deal_data', getOpenHand());
 	 	}
 
 	 	// ゲーム進行中の場合途中参加不可
@@ -201,7 +201,7 @@ console.log("+++++++++==================+++++++++++++++++");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
 	 		
 	 		// 現在のハンド状況を送信
-	 		receiveOpenHand();
+	 		socket.emit('watch_mode_receive_deal_data', getOpenHand());
 	 	}
 
 	 	// サーバサイド　socketioイベントリスナ
@@ -452,9 +452,9 @@ console.log("+++++++++==================+++++++++++++++++");
 			io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
 		}
 		
-		// 観戦中のユーザーへハンドデータを送信する
-		// 現在のハンド状況を送信
-	 	receiveOpenHand();
+		// 観戦中のユーザーへハンドデータを送信する			
+		data = getOpenHand();
+	 	io.sockets.socket(i).emit('watch_mode_receive_deal_data', data);
 	}
 	/**
 	 * ディーラーの判断
