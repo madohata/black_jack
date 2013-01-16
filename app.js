@@ -214,7 +214,8 @@ app.listen(3000);
 			 socket.emit('get_login_user_data', {userList: userList.getUserDataAllForClient()});
 
 	 		// ■席が空いてない場合はログインできない------------------------------
-	 		if(userList.isEmptySeat() &&  userList.getUserData(socket.id)) {
+			 // あと、ゲーム進行中も登録できない
+	 		if(userList.isEmptySeat() && isOngoing == false) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
 		 	  	console.log("かね！！"+userList.getUserData(socket.id).chip+"=====================================");
