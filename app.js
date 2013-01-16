@@ -149,6 +149,20 @@ console.log("+++++++++==================+++++++++++++++++");
 	/**
 	 * "プレイヤー満員"を表すフラグこれがtrueの場合はユーザーを増やさない
 	 */
+	 
+	// 現在観客に公開されているカードデータを送信する関数
+	var receiveOpenHand = function() {
+		// 現在場に公開されているカードを送信
+ 		var openHand = new Array();
+		for( var i in userList.getUserDataAll() ) {
+			var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
+			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
+			// TODO:非公開カードのデータは送信しない
+		}
+		var dealerHand = dealer.getHand();
+		
+ 		socket.emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
+	}
 
 
 	/**
@@ -160,19 +174,7 @@ console.log("+++++++++==================+++++++++++++++++");
 	 	socket.emit('connected');
 	 	
 
-		// 現在観客に公開されているカードデータを送信する関数
-		var receiveOpenHand = function() {
-			// 現在場に公開されているカードを送信
-	 		var openHand = new Array();
-			for( var i in userList.getUserDataAll() ) {
-				var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
-				openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
-				// TODO:非公開カードのデータは送信しない
-			}
-			var dealerHand = dealer.getHand();
-			
-	 		socket.emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
-		}
+		
 		
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 	 	if(! userList.isEmptySeat()) {
