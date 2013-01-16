@@ -453,8 +453,11 @@ console.log("+++++++++==================+++++++++++++++++");
 		}
 		
 		// 観戦中のユーザーへハンドデータを送信する			
-		data = getOpenHand();
-	 	io.sockets.socket(i).emit('watch_mode_receive_deal_data', data);
+		var data = getOpenHand();
+		var watcherList = userList.getWatcherList();
+	 	for(var i in watcherList) {
+	 		io.sockets.socket(watcherList[i].socketId).emit('watch_mode_receive_deal_data', data);
+	 	}
 	}
 	/**
 	 * ディーラーの判断
