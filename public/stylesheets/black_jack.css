@@ -4,7 +4,7 @@ body {
 	padding: #666;
 	font-family: "ƒƒCƒŠƒI", Meiryo, "Hiragino Kaku Gothic Pro", "ƒqƒ‰ƒMƒmŠpƒS Pro W3", "MS PƒSƒVƒbƒN", "Luicida Grande", "Lucida Sand Unicode", Arial, Verdanam sans-serif;
 	line-height: 18@x;
-	background: #EDE8EA url(/images/page_back_ground.gif) repeat;
+	/*background: #EDE8EA url(/images/page_back_ground.gif) repeat;*/
 }
 
 .game_window {
