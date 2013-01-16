@@ -413,6 +413,8 @@ window.onload = function() {
 		 */
 		socket.on('watch_mode_receive_deal_data', function(data) {
 			stateManager.changeState('Deal');
+			
+			console.log("観客用のカードデータ受信イベント発火");
 
 			// 結果画面　→　ディールステート、と直接移動する事があるので、手札情報を初期化
 			for(var i in otherList) {

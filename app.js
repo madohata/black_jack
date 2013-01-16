@@ -198,7 +198,8 @@ console.log("+++++++++==================+++++++++++++++++");
 	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
 	 		
-	 	
+	 		// 現在のハンド状況を送信
+	 		receiveOpenHand();
 	 	}
 
 	 	// サーバサイド　socketioイベントリスナ
@@ -450,10 +451,8 @@ console.log("+++++++++==================+++++++++++++++++");
 		}
 		
 		// 観戦中のユーザーへハンドデータを送信する
-		watcherList = userList.getWatcherList();
-		for(var i in watcherList) {
-			io.sockets.socket(watcherList[i].socketId).emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
-		}
+		// 現在のハンド状況を送信
+	 	receiveOpenHand();
 	}
 	/**
 	 * ディーラーの判断
