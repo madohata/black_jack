@@ -11,7 +11,7 @@
 	 // 最初に配られるチップの数
 	 var INIT_CHIP = 100;
 
-	 io = module.parent.exports.get('io');
+	 io = module.parent.exports.set('io');
 
 	console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
 	console.log(io);
