@@ -424,38 +424,31 @@ window.onload = function() {
 
 			// 背景となるシートを追加
 			// TODO:ゲームの表示座標がおかしい。座標を決めるシステムを作るべき
-			var sheet = new enchant.Sprite(512,512);
-			sheet.image = getImage('sheet');
-			sheet.x=0;
-			sheet.y=0;
-			stateManager.addChild("sheet", sheet);
+			//var sheet = new enchant.Sprite(512,512);
+			//sheet.image = getImage('sheet');
+			//sheet.x=0;
+			//sheet.y=0;
+			//stateManager.addChild("sheet", sheet);
 
 			// 背景に埋もれてしまうためラベルを前面に移動させる
 			for(var i in otherList) {
 				otherList[i].frontLabel();
 			}
 
-			for (var i in data.openHand) {
-				if(i != myAccount.countNumber && data.openHand[i]) {
-					console.log(i);
-					addLog(otherList[i].nickname+"のカードは"+data.openHand[i].suitStr+"の"+data.openHand[i].number+"と伏せカード1枚");
-				}
+			// ディーラーの公開カード
+			for (var i in data.dealerHand) {
+				// トランプを表示
+				dealerHand.setDealCard(data.dealerHand[i].suit, data.dealerHand.number[i]);
+				// 伏せカード
+				//dealerHand.setHoldCard();
 			}
-
-			// トランプを表示
-			dealerHand.setDealCard(data.dealerHand.suit, data.dealerHand.number);
-			// 伏せカード
-			dealerHand.setHoldCard();
 
 			// ユーザーの手札を表示
 			for (var i in data.openHand) {
 				if(data.openHand[i]) {
-					// 一枚目
-					otherList[i].addCard(data.openHand[i].suit, data.openHand[i].number, false);
-
-					// 二枚目
-					otherList[i].addCard(0, 0, true);
-
+					for(var t in data.openHand[i]) {
+						otherList[i].addCard(data.openHand[i][t].suit, data.openHand[i][t].number, false);
+					}
 				}
 			}
 		});

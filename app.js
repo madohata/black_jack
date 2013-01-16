@@ -158,12 +158,29 @@ console.log("+++++++++==================+++++++++++++++++");
 	 io.sockets.on('connection', function(socket) {
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
+	 	
 
-
+		// 現在観客に公開されているカードデータを送信する関数
+		var receiveOpenHand = function() {
+			// 現在場に公開されているカードを送信
+	 		var openHand = new Array();
+			for( var i in userList.getUserDataAll() ) {
+				var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
+				openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
+				// TODO:非公開カードのデータは送信しない
+			}
+			var dealerHand = dealer.getHand();
+			
+	 		socket.emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
+		}
+		
 	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 	 	if(! userList.isEmptySeat()) {
 	 		console.log("テーブルに空きがないため参加不可");
 	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
+	 		
+	 		// 現在のハンド状況を送信
+	 		receiveOpenHand();
 	 	}
 
 	 	// ゲーム進行中の場合途中参加不可
@@ -180,6 +197,8 @@ console.log("+++++++++==================+++++++++++++++++");
 
 	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
+	 		
+	 	
 	 	}
 
 	 	// サーバサイド　socketioイベントリスナ
@@ -429,6 +448,12 @@ console.log("+++++++++==================+++++++++++++++++");
 		 	// 1ターン制限時間までの制限時間を送信
 			io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
 		}
+		
+		// 観戦中のユーザーへハンドデータを送信する
+		watcherList = userList.getWatcherList();
+		for(var i in watcherList) {
+			io.sockets.socket(watcherList[i].socketId).emit('watch_mode_receive_deal_data', {openHand:openHand, dealerHand:dealerHand});
+		}
 	}
 	/**
 	 * ディーラーの判断
@@ -535,8 +560,6 @@ console.log("+++++++++==================+++++++++++++++++");
 				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
 				userList.refund(i, 0);
 			}
-
-			console.log(i+"のかね！！"+userList.getUserData(i).chip+"+=+=++=+=+=+=+=+=+=+=++++++++++++++++++++++++");
 
 			// 勝負の結果をクライアントに送信
 			io.sockets.socket(i).emit('receive_judge_result', {message:message, dealerHoldCard:dealer.getHoldCardData(), testNowtChip: userData.chip});

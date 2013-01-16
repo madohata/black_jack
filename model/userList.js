@@ -2,6 +2,7 @@ exports.UserList = function () {
 
 	this.userCount	= 0;
 	this.userList 	= new Array();
+	this.watcherList = new Array();
 	// シート番号
 	this.seatArray	= new Array(false, false, false, false, false); // 5席
 
@@ -26,6 +27,19 @@ exports.UserList = function () {
 		this.userList[userId] = new this.User(seatNumber, nickname, chip);
 
 		this.userCount++;
+	}
+	
+	/**
+	 * 観戦者のデータを登録
+	 */
+	this.setWatcherData = function(socketId, nickname) {
+		this.watcherList.push({socketId: socketId, nickname: nickname});
+	}
+	/**
+	 * 観戦者のデータを取得
+	 */
+	this.getWatcherList = function() {
+		return this.watcherList;
 	}
 
 	/**
