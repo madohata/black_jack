@@ -133,6 +133,7 @@
 	 	if(! userList.isEmptySeat()) {
 	 		console.log("テーブルに空きがないため参加不可");
 	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
+	 		socket.emit('watch_mode');
 	 	}
 
 	 	// ゲーム進行中の場合途中参加不可
@@ -149,6 +150,7 @@
 
 	 		console.log("ゲーム進行中のため参加不可");
 	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
+	 		socket.emit('watch_mode');
 	 	}
 
 	 	// サーバサイド　socketioイベントリスナ
