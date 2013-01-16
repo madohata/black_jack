@@ -12,7 +12,7 @@ var express = require('express')
 // ejsのヘルパー登録
 var helpers = require('express-helpers')(app);
 // explessのインスタンス
-var app = express.createServer();
+var app = module.exports = express.createServer();
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -215,7 +215,8 @@ app.listen(3000);
 			 socket.emit('get_login_user_data', {userList: userList.getUserDataAllForClient()});
 
 	 		// ■席が空いてない場合はログインできない------------------------------
-	 		if(userList.isEmptySeat() &&  userList.getUserData(socket.id)) {
+	 		//if(userList.isEmptySeat() &&  userList.getUserData(socket.id)) {
+			if(userList.isEmptySeat()) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
 		 	  	console.log("かね！！"+userList.getUserData(socket.id).chip+"=====================================");
