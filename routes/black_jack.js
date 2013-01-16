@@ -12,7 +12,7 @@
 	 var INIT_CHIP = 100;
 
 	 // app.jsサイドからioを受け取る
-	 io = module.parent.exports.get('io');
+	 io = module.parent.exports.set('io');
 
 	 console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
 	 console.log(io);

@@ -38,12 +38,14 @@ app.listen(3000);
 // Socket.ioの準備
 var io = require('socket.io').listen(app);
 
+
+//Routes
+console.log("APPSIDE+++++++++==================+++++++++++++++++");
+console.log(io);
+console.log("+++++++++==================+++++++++++++++++");
+
 app.set('io', io);
 
-// Routes
-console.log("APPSIDE+++++++++==================+++++++++++++++++");
-console.log(app);
-console.log("+++++++++==================+++++++++++++++++");
 app.get('/', blackJack.black_jack);
 //app.get('/', routes.index);
 //app.get('/black_jack', blackJack.black_jack); // TODO: 自動的にコントローラーを読み込む事は出来なかったか？
