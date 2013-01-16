@@ -12,7 +12,7 @@ var express = require('express')
 // ejsのヘルパー登録
 var helpers = require('express-helpers')(app);
 // explessのインスタンス
-var app = module.exports = express.createServer();
+var app = express.createServer();
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
