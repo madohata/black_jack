@@ -392,8 +392,10 @@ window.onload = function() {
 		 * チャットメッセージを受け取る #console :IDの付いたDOMに送る
 		 */
 		socket.on('chat_message', function (data) {
-			var buf = '<font style="color: #FF0000" background-color:#00FFFF">' + data.nickname + ':</span> ';
-			buf += data.message + '</font><br/>';
+			//var buf = '<font style="color: #FF0000" background-color:#00FFFF">' + data.nickname + ':</span> ';
+			//buf += data.message + '</font><br/>';
+			var buf = '<span style="color: #999" background-color:#FFFFFF">' + data.nickname + ':</span> ';
+			buf += data.message + '<br/>';
 			$("#console").html(buf + $("#console").html());
 		});
 
