@@ -397,6 +397,69 @@ window.onload = function() {
 			$("#console").html(buf + $("#console").html());
 		});
 
+		/**
+		 * 観戦モードとなった際に受け取るイベント
+		 */
+		socket.on('watch_mode', function(data) {
+			var label = new Label("観戦中");
+			label.x = 100;
+			label.y = 120;
+			nameLabel.font = "20px Tahoma";
+			label.color = "Black";
+			game.rootScene.addChild(label);
+		});
+		/**
+		 * 観客用のディールデータ取得イベント
+		 */
+		socket.on('watch_mode_receive_deal_data', function(data) {
+			stateManager.changeState('Deal');
+
+			// 結果画面　→　ディールステート、と直接移動する事があるので、手札情報を初期化
+			for(var i in otherList) {
+				otherList[i].deleteCardData();
+			}
+
+			// ディーラーのハンドを初期化
+			dealerHand.reset();
+
+			// 背景となるシートを追加
+			// TODO:ゲームの表示座標がおかしい。座標を決めるシステムを作るべき
+			var sheet = new enchant.Sprite(512,512);
+			sheet.image = getImage('sheet');
+			sheet.x=0;
+			sheet.y=0;
+			stateManager.addChild("sheet", sheet);
+
+			// 背景に埋もれてしまうためラベルを前面に移動させる
+			for(var i in otherList) {
+				otherList[i].frontLabel();
+			}
+
+			for (var i in data.openHand) {
+				if(i != myAccount.countNumber && data.openHand[i]) {
+					console.log(i);
+					addLog(otherList[i].nickname+"のカードは"+data.openHand[i].suitStr+"の"+data.openHand[i].number+"と伏せカード1枚");
+				}
+			}
+
+			// トランプを表示
+			dealerHand.setDealCard(data.dealerHand.suit, data.dealerHand.number);
+			// 伏せカード
+			dealerHand.setHoldCard();
+
+			// ユーザーの手札を表示
+			for (var i in data.openHand) {
+				if(data.openHand[i]) {
+					// 一枚目
+					otherList[i].addCard(data.openHand[i].suit, data.openHand[i].number, false);
+
+					// 二枚目
+					otherList[i].addCard(0, 0, true);
+
+				}
+			}
+		});
+
 		// ゲームメイン処理の開始　ゲーム開始
 		game.rootScene.addEventListener(Event.ENTER_FRAME, enterFrameEvent);
 
