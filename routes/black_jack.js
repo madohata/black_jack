@@ -14,8 +14,8 @@
 	 io = module.parent.exports.get('io');
 
 	console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
-	 console.log(io);
-	 console.log("+++++++++==================+++++++++++++++++");
+//	 console.log(module.parent.exports);
+//	 console.log("+++++++++==================+++++++++++++++++");
 
 	/**
 	 * ユーザー情報の管理

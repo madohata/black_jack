@@ -410,7 +410,6 @@ window.onload = function() {
 		});
 		/**
 		 * 観客用のディールデータ取得イベント
-		 * その時点での場の状況を取得
 		 */
 		socket.on('watch_mode_receive_deal_data', function(data) {
 			stateManager.changeState('Deal');
