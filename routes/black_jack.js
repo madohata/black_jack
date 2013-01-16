@@ -11,12 +11,11 @@
 	 // 最初に配られるチップの数
 	 var INIT_CHIP = 100;
 
-	// Socket.ioの準備
-	var io = require('socket.io').listen(module.parent.exports);
+	 io = module.parent.exports.geet('io');
 
-	 console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
-	 console.log(module.parent.exports);
-	 console.log("+++++++++==================+++++++++++++++++");
+	console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
+//	 console.log(module.parent.exports);
+//	 console.log("+++++++++==================+++++++++++++++++");
 
 	/**
 	 * ユーザー情報の管理
