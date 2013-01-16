@@ -12,7 +12,7 @@
 	 var INIT_CHIP = 100;
 
 	 console.log("ROUTERSIDE+++++++++==================+++++++++++++++++");
-	 console.log(module.parent.exports);
+	 console.log(module.parent);
 	 console.log("+++++++++==================+++++++++++++++++");
 
 	 // Socket.ioの準備

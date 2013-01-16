@@ -37,7 +37,7 @@ app.listen(3000);
 
 // Routes
 console.log("APPSIDE+++++++++==================+++++++++++++++++");
-console.log(module.parent);
+console.log(app);
 console.log("+++++++++==================+++++++++++++++++");
 app.get('/', blackJack.black_jack);
 //app.get('/', routes.index);
