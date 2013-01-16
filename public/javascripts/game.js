@@ -392,7 +392,7 @@ window.onload = function() {
 		 * チャットメッセージを受け取る #console :IDの付いたDOMに送る
 		 */
 		socket.on('chat_message', function (data) {
-			var buf = '<font style="color: #FF0000" background-color:#00FFFF">' + data.nickname + ':</span> ';
+			var buf = '<font style="color: #FF0000 background-color:#00FFFF">' + data.nickname + ':</span> ';
 			buf += data.message + '</font><br/>';
 			$("#console").html(buf + $("#console").html());
 		});
@@ -418,7 +418,7 @@ window.onload = function() {
 		// TODO: n件以上は表示されないよう調整する
 
 		// 下のチャットスペースにログを出力する
-		var buf = '<span style="color: #00F"> announce :</span> ';
+		var buf = '<span style="color: #00F background-color:#ffff66"> announce :</span> ';
 		buf += message + '<br/>';
 		$("#console").html(buf + $("#console").html());
 	}
