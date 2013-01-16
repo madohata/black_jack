@@ -6,3 +6,8 @@ body {
 	line-height: 18@x;
 	background: #EDE8EA url(/images/page_back_ground.gif) repeat;
 }
+
+.game_window {
+	text-align:center;
+	width:100%;
+}
