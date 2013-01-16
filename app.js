@@ -35,15 +35,19 @@ app.configure('production', function(){
 
 app.listen(3000);
 
+console.log("テスト");
+
 // Socket.ioの準備
 var io = require('socket.io').listen(app);
 
-app.set('io', io);
 
 //Routes
 console.log("APPSIDE+++++++++==================+++++++++++++++++");
 console.log(io);
 console.log("+++++++++==================+++++++++++++++++");
+
+
+app.set('io', io);
 
 
 app.get('/', blackJack.black_jack);
