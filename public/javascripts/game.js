@@ -676,7 +676,7 @@ window.onload = function() {
 			this.childArray["betLabel"].text = "";
 			this.childArray["standIcon"].text = "";
 			this.childArray["burstIcon"].text = "";
-		}
+		},
 		// 伏せカード（2番目のカード）の表面を公開
 		openHoldCard : function(suit, number) {
 			this.cardArray[1].suit		= suit;
