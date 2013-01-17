@@ -33,7 +33,7 @@ app.configure('production', function(){
 });
 
 
-app.listen(3000);
+//app.listen(3000);
 
 // Socket.ioの準備
 var io = require('socket.io').listen(app);
