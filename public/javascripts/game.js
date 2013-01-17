@@ -271,7 +271,7 @@ window.onload = function() {
 				otherList[data.countNumber].addStandIcon();
 			}
 		});
-		socket.on('receive_result_for_watcher', function(data)) {
+		socket.on('receive_result_for_watcher', function(data) {
 			// ディーラーのホールドカードを公開
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
 			
