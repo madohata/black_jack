@@ -279,7 +279,7 @@ window.onload = function() {
 			for(var i in data.otherHoldCards) {
 				otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
 			}
-		}
+		});
 		/**
 		 * 勝敗の計算結果を受け取る
 		 */
