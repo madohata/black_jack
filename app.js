@@ -390,7 +390,19 @@ console.log("+++++++++==================+++++++++++++++++");
 			}
 			console.log(msgLog);
 
-			data.nickname = userList.getUserData(socket.id).nickname;
+			// プレイヤーか観客のニックネームを付与、なければニックネームなし
+			data.nickname = "";
+			if(userList.getUserData(socket.id)) {
+				data.nickname = userList.getUserData(socket.id).nickname;
+			} else {
+				var watcherList = userList.getWatcherList();
+				for(var i in watcherList ) {
+					if(watcherList[i].socketId == socket.id) {
+						data.nickname = userList.getUserData(socket.id).nickname;
+						break;
+					}
+				}
+			}
 
 			// for all: io.sockets.emit()
 			io.sockets.emit('chat_message', data);
