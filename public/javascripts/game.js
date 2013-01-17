@@ -104,6 +104,7 @@ window.onload = function() {
 		 */
 		socket.on('login_announce_myself_watcher', function(data) {
 			addLog('観客として入場します。 nick name : '+data.nickname+' 観客番号 : '+data.number);
+			myAccount = new PlayerUnit(9999, data.nickname, 0);
 		});
 		
 		/**
@@ -440,7 +441,7 @@ window.onload = function() {
 			dealerHand.reset();
 
 			// 背景となるシートを追加
-			// TODO:ゲームの表示座標がおかしい。座標を決めるシステムを作るべき
+			// TODO: 観客用の場合はステートを正常ループさせていないため背景シート画像の制御が実装出来ていない
 			//var sheet = new enchant.Sprite(512,512);
 			//sheet.image = getImage('sheet');
 			//sheet.x=0;
@@ -453,11 +454,14 @@ window.onload = function() {
 			}
 
 			// ディーラーの公開カード
+			console.log("ディーラーの手札を追加して行く");
+			console.log("dealerHandData"+data.dealerHand);
 			for (var i in data.dealerHand) {
 				// トランプを表示
-				dealerHand.setDealCard(data.dealerHand[i].suit, data.dealerHand.number[i]);
+				dealerHand.setDealCard(data.dealerHand[i].suit, data.dealerHand[i].number);
 				// 伏せカード
 				//dealerHand.setHoldCard();
+				console.log("マーク"+data.dealerHand[i].suit+". 数字"+data.dealerHand[i].number);
 			}
 
 			// ユーザーの手札を表示
