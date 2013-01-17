@@ -398,7 +398,7 @@ console.log("+++++++++==================+++++++++++++++++");
 				var watcherList = userList.getWatcherList();
 				for(var i in watcherList ) {
 					if(watcherList[i].socketId == socket.id) {
-						data.nickname = userList.getUserData(socket.id).nickname;
+						data.nickname = uwatcherList[i].nickname;
 						break;
 					}
 				}
