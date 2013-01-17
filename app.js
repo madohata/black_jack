@@ -40,9 +40,9 @@ var io = require('socket.io').listen(app);
 
 
 //Routes
-console.log("APPSIDE+++++++++==================+++++++++++++++++");
-console.log(io);
-console.log("+++++++++==================+++++++++++++++++");
+//console.log("APPSIDE+++++++++==================+++++++++++++++++");
+//console.log(io);
+//console.log("+++++++++==================+++++++++++++++++");
 
  // 最初に配られるチップの数
 	 var INIT_CHIP = 100;
