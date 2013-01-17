@@ -225,6 +225,22 @@ var io = require('socket.io').listen(app);
 
 	 		// ■席が空いてない場合はログインできない------------------------------
 			 // あと、ゲーム進行中も登録できない
+			 
+			 // TODO: 緊急措置
+			 // ゲーム進行中の場合途中参加不可
+			 	// TODO:誰も入っていないのにゲームが進行中となっていた場合の処理をこの"login"イベントの最初に追加する？
+			 	var nameStr = "";
+				var num = 0;
+				for(var i in userList.getUserDataAll()) {
+					nameStr += userList.getUserData(i).nickname;
+					nameStr += " : ";
+					console.log("入室中ID"+i);
+					num++;
+				}
+				if(num == 0) {
+					isOngoing = false;
+				}
+			 
 	 		if(userList.isEmptySeat() && isOngoing == false) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
@@ -255,16 +271,7 @@ var io = require('socket.io').listen(app);
 			 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
 			 	}
 
-			 	// ゲーム進行中の場合途中参加不可
-			 	// TODO:誰も入っていないのにゲームが進行中となっていた場合の処理をこの"login"イベントの最初に追加する？
-			 	var nameStr = "";
-				var num = 0;
-				for(var i in userList.getUserDataAll()) {
-					nameStr += userList.getUserData(i).nickname;
-					nameStr += " : ";
-					console.log("入室中ID"+i);
-					num++;
-				}
+			 	
 			 	if(isOngoing && num != 0) {
 			 		// TODO: メッセージをクライアントに表示させよう
 
