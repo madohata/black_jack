@@ -565,7 +565,7 @@ console.log("+++++++++==================+++++++++++++++++");
 			otherHoldCards[ countNumber ] = handManager.getHoldCardData(i);
 			console.log(otherHoldCards[ countNumber ]+"test++++++++++++++++===========++++++++++++++++++++++++test1");
 		}
-		console.log(otherHoldCards+"test++++++++++++++++===========++++++++++++++++++++++++test2"):
+		console.log(otherHoldCards+"test++++++++++++++++===========++++++++++++++++++++++++test2");
 
 		// ディーラーの手と各プレイヤーの合計値を比較
 		for (var i in userList.getUserDataAll()) {
