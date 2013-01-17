@@ -45,7 +45,7 @@ exports.UserList = function () {
 	 * 観戦者の人数を取得
 	 */
 	 this.getWatcherNum = function() {
-	 	return watcherList.length;
+	 	return this.watcherList.length;
 	 }
 	 /**
 	  * 観戦者を削除
