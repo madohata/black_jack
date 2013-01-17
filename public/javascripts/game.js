@@ -277,7 +277,9 @@ window.onload = function() {
 			
 			// 他のプレイヤーのホールドカードを公開
 			for(var i in data.otherHoldCards) {
-				otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+				if(otherList[i]) {
+					otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+				}
 			}
 		});
 		/**
@@ -298,7 +300,9 @@ window.onload = function() {
 			
 			// 他のプレイヤーのホールドカードを公開
 			for(var i in data.otherHoldCards) {
-				otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+				if(otherList[i]) {
+					otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+				}
 			}
 
 			// チップを表示
