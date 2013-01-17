@@ -271,6 +271,15 @@ window.onload = function() {
 				otherList[data.countNumber].addStandIcon();
 			}
 		});
+		socket.on('receive_result_for_watcher', function(data)) {
+			// ディーラーのホールドカードを公開
+			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
+			
+			// 他のプレイヤーのホールドカードを公開
+			for(var i in data.otherHoldCards) {
+				otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+			}
+		}
 		/**
 		 * 勝敗の計算結果を受け取る
 		 */
@@ -286,6 +295,11 @@ window.onload = function() {
 
 			// ディーラーのホールドカードを公開
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
+			
+			// 他のプレイヤーのホールドカードを公開
+			for(var i in data.otherHoldCards) {
+				otherList[i].openHoldCard(data.otherHoldCards[i].suit, data.otherHoldCards[i].number);
+			}
 
 			// チップを表示
 			addLog("現在のあなたのチップは"+data.testNowtChip+"です" + '<br/>');
@@ -662,7 +676,12 @@ window.onload = function() {
 			this.childArray["betLabel"].text = "";
 			this.childArray["standIcon"].text = "";
 			this.childArray["burstIcon"].text = "";
-
+		}
+		// 伏せカード（2番目のカード）の表面を公開
+		openHoldCard : function(suit, number) {
+			this.cardArray[1].suit		= suit;
+			this.cardArray[1].number	= number;
+			this.cardArray[1].faceUp();
 		}
 	});
 

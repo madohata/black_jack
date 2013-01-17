@@ -556,6 +556,16 @@ console.log("+++++++++==================+++++++++++++++++");
 		if(dealer.isBurst()) {
 			dealerValue = 0;
 		}
+		
+		// ディーラーの伏せカード
+		var dealerHoldCardData = dealer.getHoldCardData();
+		
+		// 各プレイヤーのホールドカード
+		var otherHoldCards = new Array();
+		for(var i in userList.getUserDataAll()) {
+			var countNumber = userList.getUserData(i).countNumber;
+			otherHoldCards[ countNumber ] = handManager.getHoldCardData(i);
+		}
 
 		// ディーラーの手と各プレイヤーの合計値を比較
 		for (var i in userList.getUserDataAll()) {
@@ -585,15 +595,23 @@ console.log("+++++++++==================+++++++++++++++++");
 				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
 				userList.refund(i, 0);
 			}
-
+			
 			// 勝負の結果をクライアントに送信
-			io.sockets.socket(i).emit('receive_judge_result', {message:message, dealerHoldCard:dealer.getHoldCardData(), testNowtChip: userData.chip});
+			io.sockets.socket(i).emit('receive_judge_result', {message:message, dealerHoldCard: dealerHoldCardData, testNowtChip: userData.chip, otherHoldCards: otherHoldCards});
 
 			// 次のディールまでの待ち時間を登録
 			// ディール開始までのタイマーを登録
 	 	  	timeKeeper.registEvent("DealEvent", 30000); // 30秒
 	 	  	// ディール開始までの制限時間を送信
 	 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
+		}
+		
+		/**
+		 * 観客用の結果送信イベント
+		 */
+		var watcherList = userList.getWatcherList();
+		for(var i in watcherList) {
+			io.sockets.socket( watcherList[i].socketId ).emit('receive_result_for_watcher', {dealerHoldCard: dealerHoldCardData, otherHoldCards: otherHoldCards});
 		}
 
 		/**

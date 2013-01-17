@@ -217,5 +217,11 @@ exports.HandManager = function() {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 伏せカードのデータを取得する
+	 */
+	this.getHoldCardData = functioni(id) {
+		return this.handArray[id][1];
+	}
 }
