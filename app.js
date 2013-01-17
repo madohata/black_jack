@@ -35,8 +35,6 @@ app.configure('production', function(){
 
 app.listen(3000);
 
-console.log("テスト");
-
 // Socket.ioの準備
 var io = require('socket.io').listen(app);
 
@@ -565,7 +563,9 @@ console.log("+++++++++==================+++++++++++++++++");
 		for(var i in userList.getUserDataAll()) {
 			var countNumber = userList.getUserData(i).countNumber;
 			otherHoldCards[ countNumber ] = handManager.getHoldCardData(i);
+			console.log(otherHoldCards[ countNumber ]+"test++++++++++++++++===========++++++++++++++++++++++++test1");
 		}
+		console.log(otherHoldCards+"test++++++++++++++++===========++++++++++++++++++++++++test2"):
 
 		// ディーラーの手と各プレイヤーの合計値を比較
 		for (var i in userList.getUserDataAll()) {
