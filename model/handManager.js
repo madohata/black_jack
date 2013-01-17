@@ -221,7 +221,7 @@ exports.HandManager = function() {
 	/**
 	 * 伏せカードのデータを取得する
 	 */
-	this.getHoldCardData = functioni(id) {
+	this.getHoldCardData = function(id) {
 		return this.handArray[id][1];
 	}
 }
