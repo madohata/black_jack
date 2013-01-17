@@ -33,14 +33,31 @@ exports.UserList = function () {
 	 * 観戦者のデータを登録
 	 */
 	this.setWatcherData = function(socketId, nickname) {
-		this.watcherList.push({socketId: socketId, nickname: nickname});
+		this.watcherList.push( {socketId: socketId, nickname: nickname} );
 	}
 	/**
-	 * 観戦者のデータを取得
+	 * 観戦者のリストを取得
 	 */
 	this.getWatcherList = function() {
 		return this.watcherList;
 	}
+	/**
+	 * 観戦者の人数を取得
+	 */
+	 this.getWatcherNum = function() {
+	 	return watcherList.length;
+	 }
+	 /**
+	  * 観戦者を削除
+	  */
+	 this.deleteWatcher = function(socketId) {
+		for(var i in this.watcherList ) {
+			if(this.watcherList[i].socketId == socketId) {
+				this.watcherList.splice(i, 1);
+				break;
+			}
+		}
+	 }
 
 	/**
 	 * ユーザーデータを取得

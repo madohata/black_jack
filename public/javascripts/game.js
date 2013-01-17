@@ -89,8 +89,8 @@ window.onload = function() {
 		socket.on('login_announce_myself' , function(data) {
 			addLog("あなたの登録データ 名前："+data.nickname+"チップ"+data.chip+"番号"+data.countNumber);
 			myAccount = new PlayerUnit(data.countNumber, data.nickname, data.chip);
-
 		});
+		
 		/**
 		 * 他人がログインに成功した時
 		 */
@@ -98,6 +98,21 @@ window.onload = function() {
 			addLog("ユーザー"+data.nickname+"さんが入場しました　チップ数："+data.chip+"番号"+data.countNumber);
 			otherList[data.countNumber] = new PlayerUnit(data.countNumber, data.nickname, data.chip);
 		});
+		
+		/**
+		 * 観客として入場した場合のアナウンス
+		 */
+		socket.on('login_announce_myself_watcher', function(data) {
+			addLog('観客として入場します。 nick name : '+data.nickname+' 観客番号 : '+data.number);
+		});
+		
+		/**
+		 * 他人が観客として入場した場合のアナウンス
+		 */
+		socket.on('login_announce_other_watcher', function(data) {
+			addLog(data.nickname+'さんが観客として入場しました。');
+		});
+		
 		/**
 		 * 自分がログインする前に既に入っていたユーザーを登録
 		 */

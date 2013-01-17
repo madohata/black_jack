@@ -174,36 +174,6 @@ console.log("+++++++++==================+++++++++++++++++");
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
 	 	
-		
-		
-	 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
-	 	if(! userList.isEmptySeat()) {
-	 		console.log("テーブルに空きがないため参加不可");
-	 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
-	 		
-	 		// 現在のハンド状況を送信
-	 		socket.emit('watch_mode_receive_deal_data', getOpenHand());
-	 	}
-
-	 	// ゲーム進行中の場合途中参加不可
-	 	var nameStr = "";
-		var num = 0;
-		for(var i in userList.getUserDataAll()) {
-			nameStr += userList.getUserData(i).nickname;
-			nameStr += " : ";
-			console.log("入室中ID"+i);
-			num++;
-		}
-	 	if(isOngoing && num != 0) {
-	 		// TODO: メッセージをクライアントに表示させよう
-
-	 		console.log("ゲーム進行中のため参加不可");
-	 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
-	 		
-	 		// 現在のハンド状況を送信
-	 		socket.emit('watch_mode_receive_deal_data', getOpenHand());
-	 	}
-
 	 	// サーバサイド　socketioイベントリスナ
 	 	/**
 	 	 * 接続が途切れた時のイベント
@@ -230,8 +200,10 @@ console.log("+++++++++==================+++++++++++++++++");
 		 		 if(handManager.canNotHitAll()) {
 		 			 judge();
 		 		 }
+	 		} else {
+	 			// 観戦者の削除、観戦者リストに登録されてない場合は特に動作なし
+	 			userList.deleteWatcher(socket.id);
 	 		}
-	 		// ■定義されてない場合は無視---------------------------------------
 	 	 });
 
 	 	 /**
@@ -264,8 +236,44 @@ console.log("+++++++++==================+++++++++++++++++");
 		 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
 		 	  	// デッキの状態をクライアントに送信
 		 	  	socket.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
+	 		} else {
+	 			// ■ゲームプレイヤーとして登録できなかった場合は観客として登録される------------------------------	
+	 			
+	 			
+			 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
+			 	if(! userList.isEmptySeat()) {
+			 		console.log("テーブルに空きがないため参加不可");
+			 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
+			 	}
+
+			 	// ゲーム進行中の場合途中参加不可
+			 	// TODO:誰も入っていないのにゲームが進行中となっていた場合の処理をこの"login"イベントの最初に追加する？
+			 	var nameStr = "";
+				var num = 0;
+				for(var i in userList.getUserDataAll()) {
+					nameStr += userList.getUserData(i).nickname;
+					nameStr += " : ";
+					console.log("入室中ID"+i);
+					num++;
+				}
+			 	if(isOngoing && num != 0) {
+			 		// TODO: メッセージをクライアントに表示させよう
+
+			 		console.log("ゲーム進行中のため参加不可");
+			 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
+			 	}
+			 	
+			 	// 現在のハンド状況を送信
+			 	socket.emit('watch_mode_receive_deal_data', getOpenHand());
+			 	socket.emit('watch_mode');
+
+	 			// 観客として登録
+	 			userList.setWatcherData(socket.id, data.nickname);
+	 			// クライアントに観客として登録されたことを報告
+	 			socket.emit('login_announce_myself_watcher', {nickname: data.nickname, watcherNumber: userList.getWatcherNum()});
+	 			// 他ユーザーのクライアントに観客として登録されたことを報告
+	 			socket.broadcast.emit('login_announce_other_watcher', {nickname: data.nickname});
 	 		}
-	 		// ■席が空いてない場合はログインできない------------------------------
 	 	  });
 
 	 	 /**
