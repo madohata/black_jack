@@ -420,7 +420,7 @@ window.onload = function() {
 			var label = new Label("観戦中");
 			label.x = 100;
 			label.y = 120;
-			nameLabel.font = "20px Tahoma";
+			label.font = "20px Tahoma";
 			label.color = "Black";
 			game.rootScene.addChild(label);
 		});
@@ -450,17 +450,19 @@ window.onload = function() {
 
 			// 背景に埋もれてしまうためラベルを前面に移動させる
 			for(var i in otherList) {
-				otherList[i].frontLabel();
-			}
+				otherList[i].frontLabel();			}
 
 			// ディーラーの公開カード
 			console.log("ディーラーの手札を追加して行く");
 			console.log("dealerHandData"+data.dealerHand);
 			for (var i in data.dealerHand) {
-				// トランプを表示
-				dealerHand.setDealCard(data.dealerHand[i].suit, data.dealerHand[i].number);
-				// 伏せカード
-				//dealerHand.setHoldCard();
+				// 裏返し設定のカードを検知
+				if(data.dealerHand[i].isHold) {
+					dealerHand.setHoldCard();
+				} else {
+					// トランプを表示
+					dealerHand.setDealCard(data.dealerHand[i].suit, data.dealerHand[i].number);
+				}
 				console.log("マーク"+data.dealerHand[i].suit+". 数字"+data.dealerHand[i].number);
 			}
 
@@ -468,7 +470,12 @@ window.onload = function() {
 			for (var i in data.openHand) {
 				if(data.openHand[i]) {
 					for(var t in data.openHand[i]) {
-						otherList[i].addCard(data.openHand[i][t].suit, data.openHand[i][t].number, false);
+						if(data.openHand[i][t].isHold) {
+							// 裏カード、伏せ表示
+							otherList[i].addCard(0, 0, true);
+						} else {
+							otherList[i].addCard(data.openHand[i][t].suit, data.openHand[i][t].number, false);
+						}
 					}
 				}
 			}

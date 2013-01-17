@@ -157,9 +157,20 @@ console.log("+++++++++==================+++++++++++++++++");
 		for( var i in userList.getUserDataAll() ) {
 			var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
 			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
-			// TODO:非公開カードのデータは送信しない
 		}
 		var dealerHand = dealer.getHand();
+		
+		// もし試合中であるなら、2枚目のカードは非公開とする
+		if(isOngoing) {
+			for( var i in openHand ) {
+				openHand[i][1].suit   = 0;
+				openHand[i][1].number = 1;
+				openHand[i][1].isHold = true;
+			}
+			dealerHand[1].suit   = 0;
+			dealerHand[1].number = 1;
+			dealerHand[1].isHold = true;
+		}
 		
 		return {openHand:openHand, dealerHand:dealerHand};
 		
