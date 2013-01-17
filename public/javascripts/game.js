@@ -288,7 +288,6 @@ window.onload = function() {
 		socket.on('receive_judge_result', function(data) {
 			console.log("+++++++++++++++ここで勝敗結果を受け取る+++++++++++++++");
 
-
 			var label = new Label("<b>"+data.message+"</b>");
 			label.x = 100;
 			label.y = 100;
@@ -683,9 +682,9 @@ window.onload = function() {
 		},
 		// 伏せカード（2番目のカード）の表面を公開
 		openHoldCard : function(suit, number) {
-			this.cardArray[1].suit		= suit;
-			this.cardArray[1].number	= number;
-			this.cardArray[1].faceUp();
+			this.cardList[1].suit		= suit;
+			this.cardList[1].number	= number;
+			this.cardList[1].faceUp();
 		}
 	});
 
