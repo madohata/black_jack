@@ -77,11 +77,19 @@ var io = require('socket.io').listen(app.listen(3000));
 	/**
 	 * 進行クラス
 	 */
+	// TODO: グローバルなフラグによる力技。timeoutの状態を確認する方法がわからん・・・
+	var timeKeeperFlag = false;
 	var TimeKeeper = function() {
 		// 実行する処理の配列
 		this.eventList = new Array();
+		// 登録した時刻
+		this.registDate;
 		// ディールイベントを開始する
 		this.eventList["DealEvent"] = function() {
+
+			// ウェイトリスト削除確認
+			timeKeeperFlag = false;
+			console.log(timeKeeperFlag+"DEEEEERRRRRR!!!!!RESSSEEEEEEEETTTTTTT");
 
 			// タイムアウトになった場合、チップをかけてないユーザーは自動で最大10枚賭ける
 			for(var i in userList.getUserDataAll()) {
@@ -92,9 +100,14 @@ var io = require('socket.io').listen(app.listen(3000));
 
 	 		// ディール処理を実行する
 			deal();
+
+
 		}
 		// 手番を一つ進める
 		this.eventList["ProgressEvent"] = function() {
+
+			// ウェイトリスト削除確認
+			timeKeeperFlag = false;
 
 			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
 			for(var i in userList.getUserDataAll()) {
@@ -108,7 +121,10 @@ var io = require('socket.io').listen(app.listen(3000));
 			 			dealerTurn();
 			 		 }
 				}
+
+				console.log(timeKeeperFlag+"PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
 			}
+
 		}
 
 		// タイマー変数のリスト
@@ -116,10 +132,30 @@ var io = require('socket.io').listen(app.listen(3000));
 
 		// 時間を指定して自動進行させる
 		this.registEvent = function(eventName, time) {
-			// 既に登録されていた場合は古いものを消す
-			this.cancelEvent(eventName);
-			// 管理するために戻り値を登録しておく
-			this.waitingList[eventName] = setTimeout( this.eventList[eventName], time);
+
+			console.log(timeKeeperFlag+"EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTTSTARARARAARARAAAAARTTTTT!!!!!");
+			// ウェイトリストにIDが登録されてなければ、イベント登録
+			if(timeKeeperFlag == false) {
+				// 既に登録されていた場合は古いものを消す
+				this.cancelEvent(eventName);
+				// 管理するために戻り値を登録しておく
+				this.waitingList[eventName] = setTimeout( this.eventList[eventName], time);
+				timeKeeperFlag = true;
+
+				// 登録した時刻を記録
+				this.registDate = new Date();
+				console.log(timeKeeperFlag+"EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTT");
+
+			}
+
+			// 登録されている時刻から数え残り時間を算出
+			nowDate = new Date();
+			// 登録時刻からの経過時間
+			elapsedTime = nowDate.getTime()- this.registDate.getTime();
+			// 残り時間の算出
+			remainingTime = time - elapsedTime;
+
+			return remainingTime;
 		}
 
 		// 登録しているタイマーをキャンセルして、即刻実行する
@@ -256,9 +292,9 @@ var io = require('socket.io').listen(app.listen(3000));
 		 	  	socket.emit('login_announce_myself', myAccount);
 
 		 	  	// ディール開始までのタイマーを登録
-		 	  	timeKeeper.registEvent("DealEvent", 30000); // 30秒
+		 	  	remainingTime = timeKeeper.registEvent("DealEvent", 30000); // 30秒
 		 	  	// ディール開始までの制限時間を送信
-		 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
+		 	  	io.sockets.emit('receive_standby_time_limit', {time:Math.floor(remainingTime/1000)});
 		 	  	// デッキの状態をクライアントに送信
 		 	  	socket.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
 	 		} else {
@@ -640,9 +676,9 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// 次のディールまでの待ち時間を登録
 			// ディール開始までのタイマーを登録
-	 	  	timeKeeper.registEvent("DealEvent", 30000); // 30秒
+	 	  	remainingTime = timeKeeper.registEvent("DealEvent", 30000); // 30秒
 	 	  	// ディール開始までの制限時間を送信
-	 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
+	 	  	io.sockets.emit('receive_standby_time_limit', {time:Math.floor(remainingTime/1000)});
 		}
 
 		/**
