@@ -62,7 +62,7 @@ window.onload = function() {
 	}
 
 	// ソケット接続
-	var socket = io.connect('http://madohata.c.node-ninja.com:3000/');
+	var socket = io.connect();
 	// ソケット接続に成功した場合のイベントリスナ
 	socket.on('connect', function() {
 		addLog("接続できた！");
