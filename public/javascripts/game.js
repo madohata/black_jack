@@ -928,11 +928,11 @@ window.onload = function() {
 			this.addChild("betForm", betForm);
 
 			// メッセージ
-			var message = new Label("次のゲームでベットするチップを入力してください");
+			var message = new Label("次のゲームでベットするチップを入力してください</br>(最低10枚)");
 			message.font = "16 px Tahoma";
 			message.color = "white";
-			message.x = 50;
-			message.y = 100;
+			message.x = 20;
+			message.y = 90;
 			this.addChild("message", message);
 		},
 		update : function() {

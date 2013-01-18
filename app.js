@@ -302,13 +302,24 @@ var io = require('socket.io').listen(app.listen(3000));
 	 		 if(isOngoing == false &&  userList.getUserData(socket.id)) {
 		 		 // ユーザーのスタンバイフラグをtrueにする
 		 		 userList.setStandby(socket.id);
+		 		 // 賭け金をチェック
+		 		 var betChip = Number(data.betChip);
+		 		 betChip = Math.floor(betChip); // 小数点切り捨て
+		 		 if(betChip) {
+		 			 if(betChip < 10) {
+		 				betChip = 10;
+		 			 }
+		 		 } else {
+		 			 betChip = 10;
+		 		 }
 		 		 // ユーザーのこのゲームでの賭け金を記録
-		 		 userList.betChip(socket.id, data.betChip);
+		 		 // TODO:オールインの場合の表示を追加する？
+		 		 betChip = userList.betChip(socket.id, betChip);
 		 		 // 他ユーザーにスタンバイ状態になったことを知らせる
 		 		 socket.broadcast.emit('standby_announce', {countNumber: userList.getUserData(socket.id).countNumber,
-		 			 betChip: data.betChip});
+		 			 betChip: betChip});
 		 		 // 自分のクライアントに正しくベット出来たことを知らせる
-		 		socket.emit('myAccount_standby_announce', {betChip: data.betChip});
+		 		socket.emit('myAccount_standby_announce', {betChip: betChip});
 
 		 		 // 全てのユーザーが準備完了となったか
 		 		 if (userList.allUsersIsStandby()) {
@@ -612,10 +623,10 @@ var io = require('socket.io').listen(app.listen(3000));
 				message += "</br>払い戻し: "+ payout;
 				userList.refund(i, payout);
 
-			} else if(userValue < dealerValue){
+			} else if(userValue < dealerValue || userValue == 0){
 				// 負け
 				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
-				message += "</br>払い戻し: 0";
+				message += "</br>払い戻し: なし";
 				userList.refund(i, 0);
 			} else {
 				console.log(userData.betChip+"+++++++=========チップ確認");

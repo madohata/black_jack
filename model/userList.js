@@ -159,6 +159,8 @@ exports.UserList = function () {
 
 		this.userList[userId].chip		-= value;
 		this.userList[userId].betChip	 = value;
+
+		return value;
 	}
 	/**
 	 * チップの数を取得する
