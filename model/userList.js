@@ -28,7 +28,7 @@ exports.UserList = function () {
 
 		this.userCount++;
 	}
-	
+
 	/**
 	 * 観戦者のデータを登録
 	 */
@@ -145,7 +145,7 @@ exports.UserList = function () {
 	 * 賭け金をリセットして報酬を受け取る
 	 */
 	this.refund = function(userId, value) {
-		this.userList[userId].chip		 += value;
+		this.userList[userId].chip		 += Number(value);
 		this.userList[userId].betChip	 = 0;
 	}
 	/**

@@ -215,10 +215,10 @@ window.onload = function() {
 			for (var i in data.openHand) {
 				if(i != myAccount.countNumber && data.openHand[i]) {
 					// 一枚目
-					otherList[i].addCard(data.openHand[i].suit, data.openHand[i].number, false);
+					otherList[i].addCard(data.openHand[i][0].suit, data.openHand[i][0].number, false);
 
 					// 二枚目
-					otherList[i].addCard(0, 0, true);
+					otherList[i].addCard(data.openHand[i][1].suit, data.openHand[i][1].number, false);
 
 				} else if(i == myAccount.countNumber) {
 					// ユーザーユニットに登録
@@ -289,8 +289,8 @@ window.onload = function() {
 			console.log("+++++++++++++++ここで勝敗結果を受け取る+++++++++++++++");
 
 			var label = new Label("<b>"+data.message+"</b>");
-			label.x = 100;
-			label.y = 100;
+			label.x = 50;
+			label.y = 90;
 			label.color = "Black";
 			stateManager.addChild("resultMessage", label);
 

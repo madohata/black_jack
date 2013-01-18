@@ -159,16 +159,16 @@ var io = require('socket.io').listen(app.listen(3000));
 		var dealerHand = dealer.getHand();
 
 		// もし試合中であるなら、2枚目のカードは非公開とする
-		if(isOngoing) {
-			for( var i in openHand ) {
-				openHand[i][1].suit   = 0;
-				openHand[i][1].number = 1;
-				openHand[i][1].isHold = true;
-			}
+//		if(isOngoing) {
+//			for( var i in openHand ) {
+//				openHand[i][1].suit   = 0;
+//				openHand[i][1].number = 1;
+//				openHand[i][1].isHold = true;
+//			}
 			dealerHand[1].suit   = 0;
-			dealerHand[1].number = 1;
+			dealerHand[1].number = 0;
 			dealerHand[1].isHold = true;
-		}
+//		}
 
 		return {openHand:openHand, dealerHand:dealerHand};
 
@@ -463,7 +463,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		var openHand = new Array();
 		for( var i in userList.getUserDataAll() ) {
 			var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
-			openHand[countNumber]	= handManager.getCardList(i)[0];	// 全員の公開札
+			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
 
 		}
 
@@ -602,17 +602,26 @@ var io = require('socket.io').listen(app.listen(3000));
 				// 勝ち
 				message = "勝ちました"+" : ディーラー="+dealerValue+"あなた="+userValue;
 				// もしブラックジャックなら 2.5倍を払う
+				var payout;
 				if( handManager.isBlackJack(i) ) {
-					console.log()
-					userList.refund(i, userData.betChip * 2.5);
+					payout = userData.betChip * 2.5;
 				} else {
-					userList.refund(i, userData.betChip * 2);
+					payout = userData.betChip * 2;
 				}
 
-			} else {
+				message += "</br>払い戻し: "+ payout;
+				userList.refund(i, payout);
+
+			} else if(userValue < dealerValue){
 				// 負け
 				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
+				message += "</br>払い戻し: 0";
 				userList.refund(i, 0);
+			} else {
+				console.log(userData.betChip+"+++++++=========チップ確認");
+				message = "引き分けです : ディーラー="+dealerValue+"あなた="+userValue;
+				message += "</br>払い戻し: "+ userData.betChip;
+				userList.refund(i, userData.betChip);
 			}
 
 			// 勝負の結果をクライアントに送信
