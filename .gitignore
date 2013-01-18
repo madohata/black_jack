@@ -164,3 +164,4 @@ pip-log.txt
 
 ##node ninja 用 node_modulesをアップしない
 node_modules
+cmd.exe.lnk
