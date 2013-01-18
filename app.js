@@ -89,7 +89,7 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
-			console.log(timeKeeperFlag+"DEEEEERRRRRR!!!!!RESSSEEEEEEEETTTTTTT");
+			console.log(timeKeeperFlag+"TIMECHEK DEEEEERRRRRR!!!!!RESSSEEEEEEEETTTTTTT");
 
 			// タイムアウトになった場合、チップをかけてないユーザーは自動で最大10枚賭ける
 			for(var i in userList.getUserDataAll()) {
@@ -122,7 +122,7 @@ var io = require('socket.io').listen(app.listen(3000));
 			 		 }
 				}
 
-				console.log(timeKeeperFlag+"PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
+				console.log(timeKeeperFlag+"TIMECHEK PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
 			}
 
 		}
@@ -133,7 +133,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		// 時間を指定して自動進行させる
 		this.registEvent = function(eventName, time) {
 
-			console.log(timeKeeperFlag+"EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTTSTARARARAARARAAAAARTTTTT!!!!!");
+			console.log(timeKeeperFlag+"TIMECHEK EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTTSTARARARAARARAAAAARTTTTT!!!!!");
 			// ウェイトリストにIDが登録されてなければ、イベント登録
 			if(timeKeeperFlag == false) {
 				// 既に登録されていた場合は古いものを消す
@@ -144,7 +144,7 @@ var io = require('socket.io').listen(app.listen(3000));
 
 				// 登録した時刻を記録
 				this.registDate = new Date();
-				console.log(timeKeeperFlag+"EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTT");
+				console.log(timeKeeperFlag+"TIMECHEK EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTT");
 
 			}
 
