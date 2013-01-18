@@ -33,10 +33,10 @@ app.configure('production', function(){
 });
 
 
-app.listen(3000);
+//app.listen(3000);
 
 // Socket.ioの準備
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(app.listen(3000));
 
 
 //Routes
@@ -157,7 +157,7 @@ var io = require('socket.io').listen(app);
 			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
 		}
 		var dealerHand = dealer.getHand();
-		
+
 		// もし試合中であるなら、2枚目のカードは非公開とする
 		if(isOngoing) {
 			for( var i in openHand ) {
@@ -169,10 +169,10 @@ var io = require('socket.io').listen(app);
 			dealerHand[1].number = 1;
 			dealerHand[1].isHold = true;
 		}
-		
+
 		return {openHand:openHand, dealerHand:dealerHand};
-		
- 		
+
+
 	}
 
 	/**
@@ -182,7 +182,7 @@ var io = require('socket.io').listen(app);
 	 io.sockets.on('connection', function(socket) {
 	 	// 接続が成立したことをクライアントに通知
 	 	socket.emit('connected');
-	 	
+
 	 	// サーバサイド　socketioイベントリスナ
 	 	/**
 	 	 * 接続が途切れた時のイベント
@@ -225,7 +225,7 @@ var io = require('socket.io').listen(app);
 
 	 		// ■席が空いてない場合はログインできない------------------------------
 			 // あと、ゲーム進行中も登録できない
-			 
+
 			 // TODO: 緊急措置
 			 // ゲーム進行中の場合途中参加不可
 			 	// TODO:誰も入っていないのにゲームが進行中となっていた場合の処理をこの"login"イベントの最初に追加する？
@@ -240,7 +240,7 @@ var io = require('socket.io').listen(app);
 				if(num == 0) {
 					isOngoing = false;
 				}
-			 
+
 	 		if(userList.isEmptySeat() && isOngoing == false) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
@@ -262,25 +262,25 @@ var io = require('socket.io').listen(app);
 		 	  	// デッキの状態をクライアントに送信
 		 	  	socket.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
 	 		} else {
-	 			// ■ゲームプレイヤーとして登録できなかった場合は観客として登録される------------------------------	
-	 			
-	 			
+	 			// ■ゲームプレイヤーとして登録できなかった場合は観客として登録される------------------------------
+
+
 			 	// TODO:５人を超えていた場合、勝負が既に進行中の場合は参加させない「観戦モード」にする
 			 	if(! userList.isEmptySeat()) {
 			 		console.log("テーブルに空きがないため参加不可+++++++++++++++================");
 			 		socket.emit('alert_message', {message: "テーブルに空きがないため参加できません<br/>しばらくたってから更新してください"});
 			 	}
 
-			 	
+
 			 	if(isOngoing && num != 0) {
 			 		// TODO: メッセージをクライアントに表示させよう
 
 			 		console.log("ゲーム進行中のため参加不可+++++++++++++++++++++++++++============================");
 			 		socket.emit('alert_message', {message: "ゲーム進行中のため参加できません : "+nameStr+"がプレイ中 : 計"+num+"人 <br/>しばらくたってから更新してください"});
 			 	}
-			 	
+
 			 	console.log("観客として登録++++++++++++++====================");
-			 	
+
 			 	// 現在のハンド状況を送信
 			 	socket.emit('watch_mode_receive_deal_data', getOpenHand());
 			 	socket.emit('watch_mode');
@@ -489,8 +489,8 @@ var io = require('socket.io').listen(app);
 		 	// 1ターン制限時間までの制限時間を送信
 			io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
 		}
-		
-		// 観戦中のユーザーへハンドデータを送信する			
+
+		// 観戦中のユーザーへハンドデータを送信する
 		var data = getOpenHand();
 		var watcherList = userList.getWatcherList();
 	 	for(var i in watcherList) {
@@ -573,10 +573,10 @@ var io = require('socket.io').listen(app);
 		if(dealer.isBurst()) {
 			dealerValue = 0;
 		}
-		
+
 		// ディーラーの伏せカード
 		var dealerHoldCardData = dealer.getHoldCardData();
-		
+
 		// 各プレイヤーのホールドカード
 		var otherHoldCards = new Array();
 		for(var i in userList.getUserDataAll()) {
@@ -614,7 +614,7 @@ var io = require('socket.io').listen(app);
 				message = "負けました : ディーラー="+dealerValue+"あなた="+userValue;
 				userList.refund(i, 0);
 			}
-			
+
 			// 勝負の結果をクライアントに送信
 			io.sockets.socket(i).emit('receive_judge_result', {message:message, dealerHoldCard: dealerHoldCardData, testNowtChip: userData.chip, otherHoldCards: otherHoldCards});
 
@@ -624,7 +624,7 @@ var io = require('socket.io').listen(app);
 	 	  	// ディール開始までの制限時間を送信
 	 	  	io.sockets.emit('receive_standby_time_limit', {time:30});
 		}
-		
+
 		/**
 		 * 観客用の結果送信イベント
 		 */

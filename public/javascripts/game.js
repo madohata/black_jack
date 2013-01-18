@@ -90,7 +90,7 @@ window.onload = function() {
 			addLog("あなたの登録データ 名前："+data.nickname+"チップ"+data.chip+"番号"+data.countNumber);
 			myAccount = new PlayerUnit(data.countNumber, data.nickname, data.chip);
 		});
-		
+
 		/**
 		 * 他人がログインに成功した時
 		 */
@@ -98,7 +98,7 @@ window.onload = function() {
 			addLog("ユーザー"+data.nickname+"さんが入場しました　チップ数："+data.chip+"番号"+data.countNumber);
 			otherList[data.countNumber] = new PlayerUnit(data.countNumber, data.nickname, data.chip);
 		});
-		
+
 		/**
 		 * 観客として入場した場合のアナウンス
 		 */
@@ -106,14 +106,14 @@ window.onload = function() {
 			addLog('観客として入場します。 nick name : '+data.nickname+' 観客番号 : '+data.number);
 			myAccount = new PlayerUnit(9999, data.nickname, 0);
 		});
-		
+
 		/**
 		 * 他人が観客として入場した場合のアナウンス
 		 */
 		socket.on('login_announce_other_watcher', function(data) {
 			addLog(data.nickname+'さんが観客として入場しました。');
 		});
-		
+
 		/**
 		 * 自分がログインする前に既に入っていたユーザーを登録
 		 */
@@ -274,7 +274,7 @@ window.onload = function() {
 		socket.on('receive_result_for_watcher', function(data) {
 			// ディーラーのホールドカードを公開
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
-			
+
 			// 他のプレイヤーのホールドカードを公開
 			for(var i in data.otherHoldCards) {
 				if(otherList[i]) {
@@ -296,7 +296,7 @@ window.onload = function() {
 
 			// ディーラーのホールドカードを公開
 			dealerHand.openHoldCard(data.dealerHoldCard.suit, data.dealerHoldCard.number);
-			
+
 			// 他のプレイヤーのホールドカードを公開
 			for(var i in data.otherHoldCards) {
 				if(otherList[i]) {
@@ -446,7 +446,7 @@ window.onload = function() {
 		 */
 		socket.on('watch_mode_receive_deal_data', function(data) {
 			stateManager.changeState('Deal');
-			
+
 			console.log("観客用のカードデータ受信イベント発火");
 
 			// 結果画面　→　ディールステート、と直接移動する事があるので、手札情報を初期化
