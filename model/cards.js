@@ -83,8 +83,8 @@ exports.Cards = function () {
 
 	// デックを追加してシャッフル
 	this.addDeckAndShuffle = function() {
-		this.deckNum + 5;
-		this.addDeck(5);
+		this.deckNum + 4;
+		this.addDeck(4);
 		this.shuffleCards();
 	}
 
