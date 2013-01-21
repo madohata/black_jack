@@ -108,7 +108,8 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
-
+			console.log(timeKeeperFlag+"TIMECHEK PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
+			
 			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
 			for(var i in userList.getUserDataAll()) {
 				if(handManager.canHit(i)) {
@@ -122,7 +123,6 @@ var io = require('socket.io').listen(app.listen(3000));
 			 		 }
 				}
 
-				console.log(timeKeeperFlag+"TIMECHEK PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
 			}
 
 		}
@@ -395,7 +395,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		 		 if(handManager.canNotHitAll()) {
 
 		 		 	// 進行管理者に設定されている進行イベントをキャンセル
-		 		 	timeKeeper.cancelEvent('ProgressEvent');
+		 		 	timeKeeper.runItNow('ProgressEvent');
 		 			// ディーラーの判断をする
 		 			dealerTurn();
 		 		 }
@@ -421,7 +421,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		 		 if(handManager.canNotHitAll()) {
 
 		 		 	// 進行管	設定されている進行イベントをキャンセル
-		 		 	timeKeeper.cancelEvent('ProgressEvent');
+		 		 	timeKeeper.runItNow('ProgressEvent');
 		 			dealerTurn();
 		 		 }
 		 	}
