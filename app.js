@@ -75,6 +75,13 @@ var io = require('socket.io').listen(app.listen(3000));
 	var handManager = new HandManager(); // ユーザーデータの作成時に手札を追加し紐付ける
 
 	/**
+	 * hitとstandの決定を行うプレイヤーのカウンター
+	 */
+	// カウンターは席を表す
+	var askList			= new Array();
+	var currentPlayer;
+
+	/**
 	 * 進行クラス
 	 */
 	// TODO: グローバルなフラグによる力技。timeoutの状態を確認する方法がわからん・・・
@@ -89,7 +96,6 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
-			console.log(timeKeeperFlag+"TIMECHEK DEEEEERRRRRR!!!!!RESSSEEEEEEEETTTTTTT");
 
 			// タイムアウトになった場合、チップをかけてないユーザーは自動で最大10枚賭ける
 			for(var i in userList.getUserDataAll()) {
@@ -108,23 +114,20 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
-			console.log(timeKeeperFlag+"TIMECHEK PROOOOOOGRESSSSSSS!!!!!RESSSEEEEEEEETTTTTTT");
-			
-			// タイムアウトになった場合、ヒットを選んでいないユーザーは強制的にスタンドする
-			for(var i in userList.getUserDataAll()) {
-				if(handManager.canHit(i)) {
-					handManager.setStand(i);
 
-					var countNumber = userList.getUserData(i).countNumber;
-			 		io.sockets.emit("stand_announce", {countNumber: countNumber});
+			// タイムアウトになった場合、ヒットを選んでなければ強制的にスタンドとなる
+			if(currentPlayer) {
+				var id = currentPlayer.socketId;
+				handManager.setStand(id);
 
-			 		if(handManager.canNotHitAll()) {
-			 			dealerTurn();
-			 		 }
-				}
+				var countNumber = userList.getUserData(id).countNumber;
+		 		io.sockets.emit("stand_announce", {countNumber: countNumber});
+
 
 			}
 
+			// 次の手番へ
+	 		askHitOrStand();
 		}
 
 		// タイマー変数のリスト
@@ -133,7 +136,6 @@ var io = require('socket.io').listen(app.listen(3000));
 		// 時間を指定して自動進行させる
 		this.registEvent = function(eventName, time) {
 
-			console.log(timeKeeperFlag+"TIMECHEK EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTTSTARARARAARARAAAAARTTTTT!!!!!");
 			// ウェイトリストにIDが登録されてなければ、イベント登録
 			if(timeKeeperFlag == false) {
 				// 既に登録されていた場合は古いものを消す
@@ -144,7 +146,6 @@ var io = require('socket.io').listen(app.listen(3000));
 
 				// 登録した時刻を記録
 				this.registDate = new Date();
-				console.log(timeKeeperFlag+"TIMECHEK EVENTTTTTTTTTTTTT!!!!SEEEEEEEETTTTTTT");
 
 			}
 
@@ -168,6 +169,7 @@ var io = require('socket.io').listen(app.listen(3000));
 
 		// イベントをキャンセルする
 		this.cancelEvent = function(eventName) {
+			timeKeeperFlag = false;
 			// 同じ名前のイベントでよばれた場合はタイマーを一旦消して再登録
 			if(this.waitingList[eventName]) {
 				clearTimeout(this.waitingList[eventName]);
@@ -192,7 +194,14 @@ var io = require('socket.io').listen(app.listen(3000));
 			var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
 			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
 		}
-		var dealerHand = dealer.getHand();
+		var originDealerHand = dealer.getHand();
+		var dealerHand = new Array();
+		for(var i in originDealerHand) {
+			dealerHand[i] = {	suit  : originDealerHand[i].suit,
+								number: originDealerHand[i].number,
+								isHold: originDealerHand[i].isHold = false
+							};
+		}
 
 		// もし試合中であるなら、2枚目のカードは非公開とする
 //		if(isOngoing) {
@@ -236,6 +245,23 @@ var io = require('socket.io').listen(app.listen(3000));
 		 	 	// 手札リストからデータを削除
 		 	 	handManager.deleteHand(socket.id);
 
+		 	 	// 手番リストから削除
+		 	 	// もし選択中のユーザーなら
+		 	 	if(currentPlayer) {
+			 	 	if(currentPlayer.socketId == socket.id) {
+			 	 		// イベントをキャンセル
+			 	 		timeKeeper.cancelEvent("ProgressEvent");
+			 	 		// 次の手番へ
+				 		askHitOrStand();
+			 	 	} else {
+				 	 	for(var i in askList) {
+				 	 		if(askList[i].socketId == socket.id) {
+				 	 			askList.splice(i, 1);
+				 	 		}
+				 	 	}
+			 	 	}
+		 	 	}
+
 		 	 	// TODO:ユーザーが抜けた場合、進行不能とならないようあらゆるケースの対策をとる
 		 	 	// もしユーザーが0になってしまったら、進行中フラグをfalseに戻しておく
 		 	 	if(userList.getUserNum() == 0) {
@@ -243,7 +269,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		 	 	}
 		 	 	// 全員がHITできない状態ならそのまま勝負を実行する
 		 		 if(handManager.canNotHitAll()) {
-		 			 judge();
+		 			 dealerTurn();
 		 		 }
 	 		} else {
 	 			// 観戦者の削除、観戦者リストに登録されてない場合は特に動作なし
@@ -280,7 +306,6 @@ var io = require('socket.io').listen(app.listen(3000));
 	 		if(userList.isEmptySeat() && isOngoing == false) {
 			 	// ユーザーリストにユーザーを登録
 		 	  	userList.setUserData(socket.id, data.nickname, INIT_CHIP);
-		 	  	console.log("かね！！"+userList.getUserData(socket.id).chip+"=====================================");
 		 	  	console.log("ユーザーを登録- : "+data.nickname+" : "+socket.id+"--------------------------------------------------")
 		 	  	// 手札リストにユーザーの手札を追加
 		 	  	handManager.createHand(socket.id);
@@ -391,14 +416,8 @@ var io = require('socket.io').listen(app.listen(3000));
 		 		// デッキの状態を全員に送信
 		 		io.sockets.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
 
-		 		// 全員の選択が終わっていたら
-		 		 if(handManager.canNotHitAll()) {
-
-		 		 	// 進行管理者に設定されている進行イベントをキャンセル
-		 		 	timeKeeper.runItNow('ProgressEvent');
-		 			// ディーラーの判断をする
-		 			dealerTurn();
-		 		 }
+		 		// 手番を回す
+		 		askHitOrStand();
 	 		 }
 	 		 // ■受け取るのはゲーム進行中のみ----------------------------------------
 	 	 });
@@ -417,13 +436,8 @@ var io = require('socket.io').listen(app.listen(3000));
 		 		 var countNumber = userList.getUserData(socket.id).countNumber;
 		 		 io.sockets.emit("stand_announce", {countNumber: countNumber});
 
-		 		 //
-		 		 if(handManager.canNotHitAll()) {
-
-		 		 	// 進行管	設定されている進行イベントをキャンセル
-		 		 	timeKeeper.runItNow('ProgressEvent');
-		 			dealerTurn();
-		 		 }
+				// 手番を回す
+		 		askHitOrStand();
 		 	}
 	 		// ■受け取るのはゲーム進行中のみ----------------------------------------
 	 	 });
@@ -511,30 +525,11 @@ var io = require('socket.io').listen(app.listen(3000));
 		for( var i in userList.getUserDataAll() ) {
 			var countNumber			= userList.getUserData(i).countNumber; // クライアント側に公開する数値ID
 			openHand[countNumber]	= handManager.getCardList(i);	// 全員の公開札
-
 		}
-
-
-		var isAllUserHandComplete = true;
 		for(var i in userList.getUserDataAll()) {
 			var mineHand = handManager.getCardList(i); // 自分の手札
-			var canHit = handManager.canHit(i);	// HIT可能かどうか
 			var isBlackJack = handManager.isBlackJack(i)
-			io.sockets.socket(i).emit('receive_deal_data', {openHand:openHand, dealerHand:dealerHand, mineHand:mineHand, canHit: canHit, sumValue : handManager.calcHand(i), isBlackJack: isBlackJack});
-			// Hit出来るユーザーには選択肢を提示
-			console.log("+++++++++canhit判定+++++++++++++++++++++++");
-			if(canHit) {
-				io.sockets.socket(i).emit('hit_or_stand');
-				isAllUserHandComplete = false;
-			}
-		}
-
-		// 1人でもヒット可能ならタイマーを設定する
-		if(isAllUserHandComplete == false) {
-			// 1ターン制限時間までのタイマーを登録
-			timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
-		 	// 1ターン制限時間までの制限時間を送信
-			io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
+			io.sockets.socket(i).emit('receive_deal_data', {openHand:openHand, dealerHand:dealerHand, mineHand:mineHand, sumValue : handManager.calcHand(i), isBlackJack: isBlackJack});
 		}
 
 		// 観戦中のユーザーへハンドデータを送信する
@@ -543,69 +538,113 @@ var io = require('socket.io').listen(app.listen(3000));
 	 	for(var i in watcherList) {
 	 		io.sockets.socket(watcherList[i].socketId).emit('watch_mode_receive_deal_data', data);
 	 	}
+
+	 	// TODO: HitかStandか聞いていくフェーズに移行
+	 	askHitOrStand();
 	}
+	/**
+	 * 1巡分の手番リストを作成する
+	 */
+	var createAskList = function() {
+		var canHitList = new Array();
+		// ヒットフラグを初期化
+		handManager.AllHitFlagReset();
+		// Hit可能なユーザーを名簿に詰める
+		for(var i in userList.getUserDataAll()) {
+			if(handManager.canHit(i)) {
+				canHitList.push({socketId:i, seatNumber: userList.getUserData(i).countNumber});
+			}
+		}
+
+		// ヒットできるユーザーのリストを席番号でソート
+		canHitList.sort(function(a, b) {
+			//return a.seatNumber - b.seatNumber;
+			return b.seatNumber - a.seatNumber;
+		});
+
+		// TODO: テスト
+		console.log("手番リストを作成+=+=+=+====++=++++++++++++=======+=+=+=")
+		for(var i in canHitList){
+			user = userList.getUserData(canHitList[i].socketId);
+			console.log("名前："+user.nickname);
+			console.log("席番："+user.countNumber);
+			console.log("席番2："+user.countNumber);
+		}
+
+		// 全員最終形なら空の配列を返す
+		return canHitList;
+	}
+	/**
+	 * 手番を次に回す。全員最終形になっていればディーラーのヒットが始まる
+	 */
+	var askHitOrStand = function() {
+
+		console.log("askHitOrStand 実行+=+=+=+=+=+++=+=+=+=+=+=+=+=+=");
+
+		//
+		for(var i in askList) {
+			if( ! userList.getUserData( askList[i].socketId ) ) {
+				askList.splice(i, 1);
+			}
+		}
+
+		// 配列が空だった場合
+		if(askList.length == 0) {
+			askList = createAskList();
+
+			// 取得してもなお空だった場合はASKステート終了、ディーラーのヒットへ
+			if(askList.length == 0) {
+				currentPlayer = null;
+				dealerTurn();
+				return;
+			}
+		}
+
+		// 質問を投げるプレイヤーデータ
+		currentPlayer = askList.shift();
+
+		timeKeeper.cancelEvent("ProgressEvent");
+		// 1ターン制限時間までのタイマーを登録
+		timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
+		// 1ターン制限時間までの制限時間を送信
+		io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
+
+		// TODO: カウンタに従いhitかstandかの質問を投げる
+		io.sockets.socket(currentPlayer.socketId).emit('hit_or_stand');
+
+	}
+
 	/**
 	 * ディーラーの判断
 	 */
 	var dealerTurn = function() {
-		console.log("ディーラーは作業を開始する-----------------------------");
 
-		console.log("テスト：ディーラーの手札を表示する-----------------------------");
-		var tempHand = dealer.getHand();
-		for(var i in tempHand) {
-			console.log("インデックス:"+i);
-			console.log("suit:"+tempHand[i].suitStr+"number:"+tempHand[i].number);
-		}
+//		if(dealer.willHit()) {
+//			var card = cards.drawCard();
+//			dealer.pushCard( card );
+//			console.log("ディーラーは一枚引く---------------"+card.suitStr+"の"+card.number+"--------------");
+//			io.sockets.emit('receive_dealer_action', {card:card});
+//			// デッキの状態を送信
+//			io.sockets.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
+//		}
 
-		if(dealer.willHit()) {
+
+
+		// 自らが引かなければならない枚数をすべて引いて
+		while(dealer.willHit()) {
 			var card = cards.drawCard();
 			dealer.pushCard( card );
-			console.log("ディーラーは一枚引く---------------"+card.suitStr+"の"+card.number+"--------------");
+
 			io.sockets.emit('receive_dealer_action', {card:card});
-			// デッキの状態を送信
-			io.sockets.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
+			console.log("ディーラー連続してカードを引く-----------------------------");
 		}
+		// デッキの状態を送信
+		io.sockets.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
+		console.log("ディーラーは点数計算に移行する-----------------------------");
+		// 勝負に移す
+		judge();
 
-		// 全員最終形か調べる
-		// ヒットのロックを解除
-		handManager.AllHitFlagReset();
 
-		// すべてのユーザーの手は完成しているか？
-		var isAllUserHandComplete = true;
-		// まだ手役が完成していないユーザーがいれば再度質問を投げかける
-		for(var i in userList.getUserDataAll()) {
-			if( ! handManager.isStanding(i) ) {
-				io.sockets.socket(i).emit('hit_or_stand');
-				console.log("ディーラー"+i+"に質問を投げかける-----------------------------");
-
-				// まだすべてのユーザーの手は完成していない
-				isAllUserHandComplete = false;
-			}
-		}
-
-		// もし、質問を投げかけるべきユーザーが一人もいなければ
-		if(isAllUserHandComplete) {
-			// 自らが引かなければならない枚数をすべて引いて
-			while(dealer.willHit()) {
-				var card = cards.drawCard();
-				dealer.pushCard( card );
-
-				io.sockets.emit('receive_dealer_action', {card:card});
-				console.log("ディーラー連続してカードを引く-----------------------------");
-			}
-			// デッキの状態を送信
-			io.sockets.emit("receive_deck_data", {deckCardNum:cards.deck.length, deckNum: cards.deckNum});
-			console.log("ディーラーは点数計算に移行する-----------------------------");
-			// 勝負に移す
-			judge();
-		} else {
-			  // 1ターン制限時間までのタイマーを登録
-		 	  timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
-		 	  // 1ターン制限時間までの制限時間を送信
-		 	  io.sockets.emit('receive_hit_or_stand_time_limit', {time:30});
-		}
-
-		// まだ手札が完成していないユーザーがいたら再度応答を待つ
 	}
 	/**
 	 * 勝負を行う関数

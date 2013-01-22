@@ -14,6 +14,15 @@ exports.UserList = function () {
 		this.betChip		= 0;
 	}
 
+	// 現在の手番を持ったプレイヤー
+	this.currentSheetNum = 0;
+
+	// 次の席に座っているプレイヤーを取得
+	this.getNextSheet = function() {
+
+	}
+
+
 	/**
 	 * ユーザーデータを登録
 	 */
@@ -25,6 +34,8 @@ exports.UserList = function () {
 
 
 		this.userList[userId] = new this.User(seatNumber, nickname, chip);
+
+		console.log("シートナンバー: "+seatNumber+"+=+=++=+=+=+=+=+=+=+=+==+=+=+=++==+=++=+=+=+==++=");
 
 		this.userCount++;
 	}

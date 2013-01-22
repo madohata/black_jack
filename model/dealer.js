@@ -57,16 +57,7 @@ exports.Dealer = function () {
 			}
 		}
 
-		// エースは場合分けして加算
-//		for(var i=0; i<aceCount; i++) {
-//			if( sum + (aceCount-i)*11 <= 21) { // 11を足して21を超えないようなら11として加算
-//				sum += 11;
-//			} else {
-//				sum += 1;		// 越えてしまうようなら1として加算
-//			}
-//		}
-		// aceを2回11として足さないという性質から、まず全ての一を足してその後10加算できるならする、と言う方法でも良いはず
-		if(aceCount) {
+	if(aceCount) {
 			sum += aceCount;
 			if(sum + 10 <= 21) {
 				sum += 10;
