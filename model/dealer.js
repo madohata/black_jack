@@ -35,7 +35,7 @@ exports.Dealer = function () {
 	}
 	// バーストしているか
 	this.isBurst = function() {
-		this.hand.isBurst();
+		return this.hand.isBurst();
 	}
 	this.calcHand = function() {
 		return this.hand.calcHand();
