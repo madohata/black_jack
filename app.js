@@ -98,6 +98,9 @@ var io = require('socket.io').listen(app.listen(3000));
 			timeKeeperFlag = false;
 			
 			console.log("ディールイベントの実行++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
 
 			// タイムアウトになった場合、チップをかけてないユーザーは自動で最大10枚賭ける
 			for(var i in userList.getUserDataAll()) {
@@ -109,13 +112,19 @@ var io = require('socket.io').listen(app.listen(3000));
 				}
 			}
 
-	 		// ディール処理を実行する
+	 		// ディール処理を実行する"
 			deal();
 
 
 		}
 		// 手番を一つ進める
 		this.eventList["ProgressEvent"] = function() {
+		
+		console.log("進行イベントの実行++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
+			console.log("++=++==++=+=============++++++++++++++++++++=++==++=+=============++++++++++++++++++");
+
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
@@ -587,7 +596,8 @@ var io = require('socket.io').listen(app.listen(3000));
 	 */
 	var askHitOrStand = function() {
 
-		console.log("askHitOrStand 実行+=+=+=+=+=+++=+=+=+=+=+=+=+=+=");
+		// とりあえず登録中の進行イベントをキャンセルする
+		timeKeeper.cancelEvent("ProgressEvent");
 
 		//
 		for(var i in askList) {
@@ -610,8 +620,7 @@ var io = require('socket.io').listen(app.listen(3000));
 
 		// 質問を投げるプレイヤーデータ
 		currentPlayer = askList.shift();
-
-		timeKeeper.cancelEvent("ProgressEvent");
+		
 		// 1ターン制限時間までのタイマーを登録
 		timeKeeper.registEvent("ProgressEvent", 30000); // 30秒
 		// 1ターン制限時間までの制限時間を送信
@@ -721,7 +730,6 @@ var io = require('socket.io').listen(app.listen(3000));
 			// 勝負の結果をクライアントに送信
 			io.sockets.socket(i).emit('receive_judge_result', {message:message, dealerHoldCard: dealerHoldCardData, testNowtChip: userData.chip, otherHoldCards: otherHoldCards});
 
-			// 次のディールまでの待ち時間を登録
 			// ディール開始までのタイマーを登録
 	 	  	remainingTime = timeKeeper.registEvent("DealEvent", 30000); // 30秒
 	 	  	// ディール開始までの制限時間を送信
