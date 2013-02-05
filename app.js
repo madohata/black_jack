@@ -96,11 +96,16 @@ var io = require('socket.io').listen(app.listen(3000));
 
 			// ウェイトリスト削除確認
 			timeKeeperFlag = false;
+			
+			console.log("ディールイベントの実行++=++==++=+=============++++++++++++++++++");
 
 			// タイムアウトになった場合、チップをかけてないユーザーは自動で最大10枚賭ける
 			for(var i in userList.getUserDataAll()) {
-				if(userList.getUserData(i).betchip == 0) {
+			console.log("ユーザーデータ"+userList.getUserData(i));
+			console.log("ベットチップ"+userList.getUserData(i).betchip);
+				if(!userList.getUserData(i).betchip) {
 					userList.betChip(i, 10);
+					console.log("自動ベット発動");
 				}
 			}
 
@@ -135,6 +140,8 @@ var io = require('socket.io').listen(app.listen(3000));
 
 		// 時間を指定して自動進行させる
 		this.registEvent = function(eventName, time) {
+		
+			console.log("イベントを登録 フラグ："+timeKeeperFlag+" イベント名 "+eventName);
 
 			// ウェイトリストにIDが登録されてなければ、イベント登録
 			if(timeKeeperFlag == false) {
@@ -551,6 +558,7 @@ var io = require('socket.io').listen(app.listen(3000));
 		handManager.AllHitFlagReset();
 		// Hit可能なユーザーを名簿に詰める
 		for(var i in userList.getUserDataAll()) {
+			console.log("ヒット検索+#+#+#+#+#+#+#+#+#++##+#+#+#+#+"+handManager.canHit(i));
 			if(handManager.canHit(i)) {
 				canHitList.push({socketId:i, seatNumber: userList.getUserData(i).countNumber});
 			}
